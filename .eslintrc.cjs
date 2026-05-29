@@ -8,10 +8,20 @@ module.exports = {
     'prettier'
   ],
   ignorePatterns: ['dist', 'node_modules', 'vite.config.ts'],
+  rules: {
+    '@typescript-eslint/no-explicit-any': 'warn',
+    '@typescript-eslint/no-unused-vars': [
+      'error',
+      { argsIgnorePattern: '^_', caughtErrorsIgnorePattern: '^_' }
+    ]
+  },
   overrides: [
     {
       files: ['packages/sdk/**/*.ts'],
       env: { browser: true, es2022: true },
+      rules: {
+        '@typescript-eslint/no-explicit-any': 'off'
+      },
       globals: {
         window: 'readonly',
         document: 'readonly'
