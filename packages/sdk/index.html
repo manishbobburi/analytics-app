@@ -1,0 +1,42 @@
+<!doctype html>
+<html>
+  <head>
+    <title>SDK Test</title>
+    <script>
+      !(function (w, p) {
+        var a = (w[p] =
+          w[p] ||
+          function () {
+            (a.q = a.q || []).push(arguments);
+          });
+        a.q = a.q || [];
+        var methods = [
+          'init',
+          'page',
+          'track',
+          'identify',
+          'consent',
+          'trackVideoStart',
+          'trackVideoProgress',
+          'trackVideoEnd',
+        ];
+        methods.forEach(function (m) {
+          a[m] =
+            a[m] ||
+            function () {
+              a.q.push([m, Array.from(arguments)]);
+            };
+        });
+      })(window, 'Pulse');
+
+      Pulse.init('org_test_123');
+      Pulse.page();
+    </script>
+    <script type="module" src="/src/index.ts"></script>
+  </head>
+
+  <body>
+    <h1>Test SDK</h1>
+    <button onclick="Pulse.track('button_clicked', { button: 'test' })">Track Event</button>
+  </body>
+</html>
