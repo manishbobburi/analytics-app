@@ -1,0 +1,23 @@
+{
+  "name": "@app/sdk",
+  "version": "0.1.0",
+  "type": "module",
+  "main": "dist/v1.iife.js",
+  "module": "dist/v1.mjs",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "dev": "vite",
+    "build": "npm run build:js && npm run build:types",
+    "build:js": "vite build",
+    "build:types": "tsc",
+    "build:watch": "vite build --watch",
+    "lint": "eslint . --ext .ts",
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@types/node": "^25.9.1",
+    "terser": "^5.31.6",
+    "typescript": "^5.6.3",
+    "vite": "^6.0.4"
+  }
+}
