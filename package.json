@@ -1,0 +1,46 @@
+{
+  "name": "app",
+  "version": "0.0.0",
+  "private": true,
+  "description": "app monorepo",
+  "devEngines": {
+    "packageManager": {
+      "name": "pnpm",
+      "version": "11.3.0",
+      "onFail": "download"
+    }
+  },
+  "scripts": {
+    "dev:sdk": "pnpm --filter @app/sdk dev",
+    "dev:api": "pnpm --filter @app/api dev",
+    "build:sdk": "pnpm --filter @app/sdk build",
+    "build": "pnpm -r build",
+    "lint": "pnpm -r lint",
+    "format": "prettier --write .",
+    "prepare": "husky"
+  },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx,json,css,md,html}": [
+      "prettier --write"
+    ],
+    "packages/sdk/**/*.ts": [
+      "eslint --fix",
+      "bash -c 'cd packages/sdk && pnpm typecheck'"
+    ],
+    "packages/api/**/*.ts": [
+      "eslint --fix"
+    ]
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^8.60.0",
+    "@typescript-eslint/parser": "^8.60.0",
+    "eslint": "^10.4.0",
+    "eslint-config-prettier": "^10.1.8",
+    "husky": "^9.1.7",
+    "lint-staged": "^17.0.5",
+    "prettier": "^3.8.3"
+  }
+}
