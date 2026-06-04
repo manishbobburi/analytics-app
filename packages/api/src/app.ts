@@ -1,6 +1,7 @@
 import express, { Express } from 'express';
 import cors from 'cors';
 import { serverConfig } from './config/index.js';
+import router from './routes/index.js';
 
 const app: Express = express();
 
@@ -16,6 +17,10 @@ app.use(
 
 app.use(express.json({ limit: serverConfig.limits.bodyLimit }));
 
+app.use(express.urlencoded({ extended: false }));
+
 app.use('/health', (_, res) => res.json({ status: 'OK' }));
+
+app.use('/api', router);
 
 export default app;
