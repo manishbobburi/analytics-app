@@ -6,3 +6,18 @@ generator client {
 datasource db {
   provider = "postgresql"
 }
+
+model User {
+  id String @id @default(uuid())
+  orgId String @map("org_id")
+  userId String? @map("user_id")
+  email String?
+  traits Json?
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+  lastSeenAt DateTime? @map("last_seen_at")
+
+  @@index([orgId])
+  @@index([userId])
+  @@map("users")
+}
