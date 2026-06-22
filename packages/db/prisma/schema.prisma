@@ -21,3 +21,15 @@ model User {
   @@index([userId])
   @@map("users")
 }
+
+model Organization {
+  id String @id @default(cuid())
+  name String
+  email String @unique
+  passwordHash String @map("passowrd_hash")
+  isVerified Boolean @default(false) @map("is_verified")
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@index([email])
+  @@map("organizations")
+}
