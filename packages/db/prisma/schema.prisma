@@ -33,3 +33,21 @@ model Organization {
   @@index([email])
   @@map("organizations")
 }
+
+model Event {
+  id String @id @default(uuid())
+  orgId String @map("org_id")
+  anonId String @map("anon_id")
+  sessionId String @map("session_id")
+  userId String? @map("user_id")
+  event String
+  timestamp DateTime
+  properties Json
+  context Json
+
+  @@index([orgId, timestamp])
+  @@index([anonId])
+  @@index([userId])
+  @@index([orgId, event])
+  @@map("events")
+}
