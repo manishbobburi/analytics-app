@@ -51,3 +51,16 @@ model Event {
   @@index([orgId, event])
   @@map("events")
 }
+
+model ApiKey {
+  id String @id @default(uuid())
+  orgId String
+  key String @unique
+  name String
+  allowedDomains String[] @map("allowed_domains")
+  lastUsedAt DateTime @map("last_used_at")
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@index([key])
+  @@map("api_keys")
+}
