@@ -6,3 +6,5 @@ export class OrganizationRepository extends BaseRepository<any> {
     super(prisma.organization);
   }
 }
+
+export const organizationRepository = new OrganizationRepository();
