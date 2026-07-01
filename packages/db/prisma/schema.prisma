@@ -31,7 +31,14 @@ model Event {
   event String
   timestamp DateTime
   properties Json
+  contentId String? @map("content_id")
+  contentType String? @map("content_type")
   context Json
+  pageUrl String? @map("page_url")
+  referrer String?
+  userAgent String? @map("user_agent")
+  language String?
+  screenWidth Int? @map("screen_width")
   createdAt DateTime @default(now()) @map("created_at")
 
   org Organization @relation(fields: [orgId], references: [id])
@@ -42,12 +49,16 @@ model Event {
   @@index([userId])
   @@index([orgId, event])
   @@index([orgId, sessionId])
+  @@index([orgId, userId, timestamp])
+  @@index([orgId, anonId, timestamp])
+  @@index([orgId, sessionId, timestamp])
+  @@index([createdAt])
   @@map("events")
 }
 
 model ApiKey {
   id String @id @default(uuid())
-  orgId String
+  orgId String @map("org_id")
   key String @unique
   name String
   allowedDomains String[] @map("allowed_domains")
@@ -57,5 +68,6 @@ model ApiKey {
   org Organization @relation(fields: [orgId], references: [id])
 
   @@index([key])
+  @@index([orgId])
   @@map("api_keys")
 }
