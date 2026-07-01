@@ -2,6 +2,7 @@ import express, { Express } from 'express';
 import cors from 'cors';
 import { serverConfig } from './config/index.js';
 import router from './routes/index.js';
+import globalErrorHandler from './middleware/errorHandler.js';
 
 const app: Express = express();
 
@@ -22,5 +23,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use('/health', (_, res) => res.json({ status: 'OK' }));
 
 app.use('/api', router);
+
+app.use(globalErrorHandler);
 
 export default app;
