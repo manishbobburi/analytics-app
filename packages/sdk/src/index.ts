@@ -11,7 +11,7 @@ class PulseSDK {
   constructor() {
     this.config = {
       apiKey: '',
-      apiUrl: 'https://api.pulse.dev/v1/track',
+      apiUrl: 'http://localhost:3001/api/v1/events/',
       flushInterval: 3000,
       batchSize: 10,
       consent: true,
@@ -41,6 +41,7 @@ class PulseSDK {
     if (!this.config.consent) return;
 
     const baseEvent: BaseEvent = {
+      event_id: crypto.randomUUID(),
       event,
       timestamp: Date.now(),
       anon_id: this.anonId,
