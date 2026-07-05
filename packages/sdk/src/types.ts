@@ -1,12 +1,13 @@
 export interface PulseConfig {
   apiKey: string;
-  apiUrl?: string; // default https://api.pulse.dev
-  flushInterval?: number; // ms, default 3000
-  batchSize?: number; // default 10
-  consent?: boolean; // default true
+  apiUrl?: string;
+  flushInterval?: number;
+  batchSize?: number;
+  consent?: boolean;
 }
 
 export interface BaseEvent {
+  event_id: string;
   event: string;
   timestamp: number;
   anon_id: string;
