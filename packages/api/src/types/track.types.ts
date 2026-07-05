@@ -1,16 +1,17 @@
-export interface BaseEvent {
+export interface NormalizedEvent {
+  eventId: string;
   event: string;
-  timestamp: number;
-  anon_id: string;
-  session_id: string;
-  user_id?: string;
-  properties: Record<string, any>;
+  timestamp: Date;
+  anonId: string;
+  sessionId: string;
+  userId?: string;
+  properties: Record<string, unknown>;
   context: {
-    page_url: string;
-    page_title: string;
-    referrer: string;
-    user_agent: string;
-    screen_width: number;
+    pageUrl: string;
+    pageTitle: string;
+    referrer?: string;
+    userAgent: string;
+    screenWidth: number;
     language: string;
   };
 }
