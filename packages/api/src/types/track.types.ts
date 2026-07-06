@@ -14,4 +14,9 @@ export interface NormalizedEvent {
     screenWidth: number;
     language: string;
   };
+  pageUrl: string;
+  referrer?: string;
+  userAgent: string;
+  language: string;
+  screenWidth: number;
 }
