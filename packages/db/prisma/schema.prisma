@@ -15,13 +15,13 @@ model Organization {
   isVerified Boolean @default(false) @map("is_verified")
   createdAt DateTime @default(now()) @map("created_at")
 
-  apiKeys ApiKey[]
+  writeKeys WriteKey[]
   events Event[]
 
   @@map("organizations")
 }
 
-model Event {
+  model Event {
   id String @id @default(uuid())
   eventId String @map("event_id")
   orgId String @map("org_id")
@@ -56,12 +56,13 @@ model Event {
   @@map("events")
 }
 
-model ApiKey {
+model WriteKey {
   id String @id @default(uuid())
   orgId String @map("org_id")
   key String @unique
-  name String
+  label String
   allowedDomains String[] @map("allowed_domains")
+  isActive Boolean @default(true) @map("is_active")
   lastUsedAt DateTime? @map("last_used_at")
   createdAt DateTime @default(now()) @map("created_at")
 
@@ -69,5 +70,5 @@ model ApiKey {
 
   @@index([key])
   @@index([orgId])
-  @@map("api_keys")
+  @@map("write_keys")
 }
