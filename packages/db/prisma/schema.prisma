@@ -41,7 +41,7 @@ model Organization {
   screenWidth Int? @map("screen_width")
   createdAt DateTime @default(now()) @map("created_at")
 
-  org Organization @relation(fields: [orgId], references: [id])
+  organization Organization @relation(fields: [orgId], references: [id])
 
   @@unique([orgId, eventId])
   @@index([orgId, timestamp])
@@ -59,16 +59,16 @@ model Organization {
 model WriteKey {
   id String @id @default(uuid())
   orgId String @map("org_id")
-  key String @unique
+  keyHash String @unique @map("key_hash")
   label String
   allowedDomains String[] @map("allowed_domains")
   isActive Boolean @default(true) @map("is_active")
   lastUsedAt DateTime? @map("last_used_at")
+  revokedAt DateTime? @map("revoked_at")
   createdAt DateTime @default(now()) @map("created_at")
 
-  org Organization @relation(fields: [orgId], references: [id])
+  organization Organization @relation(fields: [orgId], references: [id])
 
-  @@index([key])
   @@index([orgId])
   @@map("write_keys")
 }
