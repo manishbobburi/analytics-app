@@ -64,8 +64,16 @@ async function validateWriteKey(origin: string, writeKey: string) {
   return record;
 }
 
+async function updateLastUsed(writeKeyId: string) {
+  await writeKeyRepository.update(writeKeyId, {
+    lastUsedAt: new Date(),
+  });
+
+  return;
+}
+
 function isAllowedDomain(origin: string, allowedDomains: string[]): boolean {
   return allowedDomains.includes(origin);
 }
 
-export { createWriteKey, validateWriteKey };
+export { createWriteKey, validateWriteKey, updateLastUsed };
