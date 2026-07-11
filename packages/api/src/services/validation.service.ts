@@ -1,4 +1,4 @@
-import { BatchEventSchema, EventInput } from '../schemas/index.js';
+import { BatchEventSchema, EventInput } from '@app/shared';
 
 function validateBatch(data: EventInput[]): EventInput[] {
   return BatchEventSchema.parse(data);

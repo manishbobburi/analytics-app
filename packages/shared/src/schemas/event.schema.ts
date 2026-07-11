@@ -19,4 +19,3 @@ export const EventSchema = z.object({
 });
 
 export const BatchEventSchema = z.array(EventSchema).min(1);
-export type EventInput = z.infer<typeof EventSchema>;

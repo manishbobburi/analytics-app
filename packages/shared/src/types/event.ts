@@ -1,3 +1,8 @@
+import { z } from 'zod';
+import { EventSchema } from '../schemas/index.js';
+
+export type EventInput = z.infer<typeof EventSchema>;
+
 export interface NormalizedEvent {
   eventId: string;
   event: string;
