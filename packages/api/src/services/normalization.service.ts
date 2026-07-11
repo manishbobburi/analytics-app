@@ -1,5 +1,4 @@
-import { EventInput } from '../schemas/index.js';
-import { NormalizedEvent } from '../types/index.js';
+import { EventInput, NormalizedEvent } from '@app/shared';
 
 function normalizeTimestamp(timestamp: string | number | Date): Date {
   return new Date(timestamp);
@@ -43,4 +42,8 @@ function normalizeEvent(orgId: string, event: EventInput): NormalizedEvent {
   };
 }
 
-export { normalizeEvent };
+function normalizeBatch(orgId: string, events: EventInput[]): NormalizedEvent[] {
+  return events.map((event) => normalizeEvent(orgId, event));
+}
+
+export { normalizeBatch };
