@@ -17,11 +17,12 @@ function normalizeUserId(userId?: string): string | undefined {
   return trimmed.length > 0 ? trimmed : undefined;
 }
 
-function normalizeEvent(event: EventInput): NormalizedEvent {
+function normalizeEvent(orgId: string, event: EventInput): NormalizedEvent {
   return {
     eventId: event.event_id,
     event: normalizeEventName(event.event),
     timestamp: normalizeTimestamp(event.timestamp),
+    orgId: orgId,
     anonId: event.anon_id,
     sessionId: event.session_id,
     userId: normalizeUserId(event.user_id),

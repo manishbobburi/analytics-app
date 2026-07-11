@@ -2,6 +2,7 @@ export interface NormalizedEvent {
   eventId: string;
   event: string;
   timestamp: Date;
+  orgId: string;
   anonId: string;
   sessionId: string;
   userId?: string;
