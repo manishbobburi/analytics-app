@@ -5,6 +5,12 @@ export class OrganizationRepository extends BaseRepository<any> {
   constructor() {
     super(prisma.organization);
   }
+
+  async findOrganizationByEmail(email: string) {
+    return prisma.organization.findUnique({
+      where: { email },
+    });
+  }
 }
 
 export const organizationRepository = new OrganizationRepository();
