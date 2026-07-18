@@ -1,6 +1,8 @@
 import crypto from 'node:crypto';
-import jwt from 'jsonwebtoken';
+import { StatusCodes } from 'http-status-codes';
+import jwt, { JwtPayload as DefaultJwtPayload } from 'jsonwebtoken';
 import { serverConfig } from '../config/index.js';
+import { AppError } from '../error/index.js';
 
 const ACCESS_SECRET = serverConfig.jwt.accessSecret;
 const REFRESH_SECRET = serverConfig.jwt.refreshSecret;
@@ -23,6 +25,8 @@ interface RefreshTokenPayload {
   type: 'refresh';
   jti: string;
 }
+
+type VerifiedAccessToken = DefaultJwtPayload & AccessTokenPayload;
 
 function generateAccessToken(orgId: string, email: string): string {
   return jwt.sign(
@@ -69,4 +73,25 @@ function generateRefreshToken(orgId: string): {
   return { token, jti, expiresAt };
 }
 
-export { AccessTokenPayload, RefreshTokenPayload, generateAccessToken, generateRefreshToken };
+function verifyAccessToken(token: string): VerifiedAccessToken {
+  const payload = jwt.verify(token, ACCESS_SECRET, {
+    issuer: 'app-api',
+    audience: 'app-dashboard',
+    algorithms: ['HS256'],
+  }) as VerifiedAccessToken;
+
+  if (payload.type !== 'access') {
+    throw new AppError('Invalid access token.', StatusCodes.UNAUTHORIZED, 'INVALID_ACCESS_TOKEN');
+  }
+
+  return payload;
+}
+
+export {
+  AccessTokenPayload,
+  RefreshTokenPayload,
+  VerifiedAccessToken,
+  generateAccessToken,
+  generateRefreshToken,
+  verifyAccessToken,
+};
