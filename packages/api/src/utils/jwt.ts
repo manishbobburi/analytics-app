@@ -27,6 +27,7 @@ interface RefreshTokenPayload {
 }
 
 type VerifiedAccessToken = DefaultJwtPayload & AccessTokenPayload;
+type VerifiedRefreshToken = DefaultJwtPayload & RefreshTokenPayload;
 
 function generateAccessToken(orgId: string, email: string): string {
   return jwt.sign(
@@ -87,11 +88,27 @@ function verifyAccessToken(token: string): VerifiedAccessToken {
   return payload;
 }
 
+function verifyRefreshToken(token: string): VerifiedRefreshToken {
+  const payload = jwt.verify(token, REFRESH_SECRET, {
+    issuer: 'app-api',
+    audience: 'app-dashboard',
+    algorithms: ['HS256'],
+  }) as VerifiedRefreshToken;
+
+  if (payload.type !== 'refresh') {
+    throw new AppError('Invalid refresh token.', StatusCodes.UNAUTHORIZED, 'INVALID_REFRESH_TOKEN');
+  }
+
+  return payload;
+}
+
 export {
   AccessTokenPayload,
   RefreshTokenPayload,
   VerifiedAccessToken,
+  VerifiedRefreshToken,
   generateAccessToken,
   generateRefreshToken,
   verifyAccessToken,
+  verifyRefreshToken,
 };
