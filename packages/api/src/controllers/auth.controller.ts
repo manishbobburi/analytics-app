@@ -49,4 +49,21 @@ async function refreshAccessToken(req: Request, res: Response) {
   return res.status(StatusCodes.OK).json(successResponse({ accessToken }));
 }
 
-export { login, refreshAccessToken };
+async function logout(req: Request, res: Response) {
+  const token = req.cookies.refreshToken;
+
+  if (token) {
+    await authService.logout(token);
+  }
+
+  res.clearCookie('refreshToken', {
+    httpOnly: true,
+    secure: serverConfig.isProd,
+    sameSite: 'strict',
+    path: '/auth/refresh',
+  });
+
+  return res.status(StatusCodes.NO_CONTENT).end();
+}
+
+export { login, refreshAccessToken, logout };
