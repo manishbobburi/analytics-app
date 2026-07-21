@@ -103,4 +103,23 @@ async function refreshAccessToken(refreshToken: string) {
   };
 }
 
-export { login, refreshAccessToken };
+async function logout(token: string) {
+  try {
+    const payload: VerifiedRefreshToken = verifyRefreshToken(token);
+    const refreshTokenRecord = await refreshTokenRepository.findByJti(payload.jti);
+
+    if (!refreshTokenRecord) return;
+
+    await refreshTokenRepository.update(refreshTokenRecord.id, {
+      revokedAt: new Date(),
+    });
+  } catch (err) {
+    if (err instanceof jwt.JsonWebTokenError || err instanceof jwt.TokenExpiredError) return;
+
+    throw err;
+  }
+
+  return;
+}
+
+export { login, refreshAccessToken, logout };
