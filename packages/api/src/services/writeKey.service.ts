@@ -64,6 +64,27 @@ async function validateWriteKey(origin: string, writeKey: string) {
   return record;
 }
 
+async function listWriteKeys(orgId: string) {
+  const writeKeys = await writeKeyRepository.findWriteKeys({
+    where: {
+      orgId,
+    },
+    select: {
+      id: true,
+      label: true,
+      allowedDomains: true,
+      isActive: true,
+      lastUsedAt: true,
+      createdAt: true,
+    },
+    orderBy: {
+      createdAt: 'desc',
+    },
+  });
+
+  return writeKeys;
+}
+
 async function updateLastUsed(writeKeyId: string) {
   await writeKeyRepository.update(writeKeyId, {
     lastUsedAt: new Date(),
@@ -76,4 +97,4 @@ function isAllowedDomain(origin: string, allowedDomains: string[]): boolean {
   return allowedDomains.includes(origin);
 }
 
-export { createWriteKey, validateWriteKey, updateLastUsed };
+export { createWriteKey, validateWriteKey, updateLastUsed, listWriteKeys };

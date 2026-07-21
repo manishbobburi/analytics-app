@@ -1,4 +1,4 @@
-import { prisma } from '../client.js';
+import { Prisma, prisma } from '../client.js';
 import { BaseRepository } from './base.repository.js';
 
 class WriteKeyRepository extends BaseRepository<any> {
@@ -12,6 +12,10 @@ class WriteKeyRepository extends BaseRepository<any> {
         keyHash: keyHash,
       },
     });
+  }
+
+  async findWriteKeys(args?: Prisma.WriteKeyFindManyArgs) {
+    return await prisma.writeKey.findMany(args);
   }
 }
 

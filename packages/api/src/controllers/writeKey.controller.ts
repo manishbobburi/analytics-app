@@ -24,4 +24,17 @@ async function createWriteKey(req: Request, res: Response) {
   );
 }
 
-export { createWriteKey };
+async function listWriteKeys(req: Request, res: Response) {
+  const user = req.user!;
+  const orgId = user.sub;
+
+  const writeKeys = await writeKeyService.listWriteKeys(orgId);
+
+  return res.status(StatusCodes.OK).json(
+    successResponse({
+      writeKeys,
+    })
+  );
+}
+
+export { createWriteKey, listWriteKeys };
