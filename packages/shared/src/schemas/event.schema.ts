@@ -10,11 +10,14 @@ export const EventSchema = z.object({
   properties: z.record(z.string(), z.unknown()),
   context: z.object({
     page_url: z.url(),
+    page_path: z.string(),
     page_title: z.string(),
     referrer: z.string().optional(),
     user_agent: z.string(),
     screen_width: z.number().int().positive(),
+    screen_height: z.number().int().positive(),
     language: z.string(),
+    timezone: z.string(),
   }),
 });
 
