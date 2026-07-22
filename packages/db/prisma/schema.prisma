@@ -22,7 +22,7 @@ model Organization {
   @@map("organizations")
 }
 
-  model Event {
+model Event {
   id String @id @default(uuid())
   eventId String @map("event_id")
   orgId String @map("org_id")
@@ -36,24 +36,26 @@ model Organization {
   contentType String? @map("content_type")
   context Json
   pageUrl String? @map("page_url")
+  pagePath String? @map("page_path")
   referrer String?
-  userAgent String? @map("user_agent")
+  browserName String? @map("browser_name")
+  osName String? @map("os_name")
+  deviceType String? @map("device_type")
   language String?
-  screenWidth Int? @map("screen_width")
+  timezone String? @map("timezone")
   createdAt DateTime @default(now()) @map("created_at")
 
   organization Organization @relation(fields: [orgId], references: [id])
 
   @@unique([orgId, eventId])
   @@index([orgId, timestamp])
-  @@index([anonId])
-  @@index([userId])
   @@index([orgId, event])
-  @@index([orgId, sessionId])
   @@index([orgId, userId, timestamp])
   @@index([orgId, anonId, timestamp])
   @@index([orgId, sessionId, timestamp])
-  @@index([createdAt])
+  @@index([orgId, browserName])
+  @@index([orgId, osName])
+  @@index([orgId, deviceType])
   @@map("events")
 }
 
