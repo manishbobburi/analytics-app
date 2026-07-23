@@ -126,11 +126,14 @@ class PulseSDK {
   private getContext() {
     return {
       page_url: window.location.href,
+      page_path: window.location.pathname,
       page_title: document.title,
       referrer: document.referrer,
       user_agent: navigator.userAgent,
       screen_width: window.screen.width,
+      screen_height: window.screen.height,
       language: navigator.language,
+      timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
     };
   }
 
