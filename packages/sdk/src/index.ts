@@ -10,7 +10,7 @@ class PulseSDK {
 
   constructor() {
     this.config = {
-      apiKey: '',
+      writeKey: '',
       apiUrl: 'http://localhost:3001/api/v1/events/',
       flushInterval: 3000,
       batchSize: 10,
@@ -21,9 +21,9 @@ class PulseSDK {
     this.bindUnload();
   }
 
-  init(apiKey: string, opts: Partial<PulseConfig> = {}) {
-    this.config = { ...this.config, ...opts, apiKey };
-    if (!apiKey) throw new Error('Pulse: apiKey required');
+  init(writeKey: string, opts: Partial<PulseConfig> = {}) {
+    this.config = { ...this.config, ...opts, writeKey };
+    if (!writeKey) throw new Error('Pulse: writeKey required');
     this.startTimer();
   }
 
@@ -37,7 +37,7 @@ class PulseSDK {
   }
 
   track(event: string, properties: Record<string, any> = {}) {
-    if (!this.config.apiKey) return;
+    if (!this.config.writeKey) return;
     if (!this.config.consent) return;
 
     const baseEvent: BaseEvent = {
@@ -82,7 +82,7 @@ class PulseSDK {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          api_key: this.config.apiKey,
+          write_key: this.config.writeKey,
           batch,
         }),
         keepalive: true,
@@ -126,11 +126,14 @@ class PulseSDK {
   private getContext() {
     return {
       page_url: window.location.href,
+      page_path: window.location.pathname,
       page_title: document.title,
       referrer: document.referrer,
       user_agent: navigator.userAgent,
       screen_width: window.screen.width,
+      screen_height: window.screen.height,
       language: navigator.language,
+      timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
     };
   }
 

@@ -1,5 +1,5 @@
 export interface PulseConfig {
-  apiKey: string;
+  writeKey: string;
   apiUrl?: string;
   flushInterval?: number;
   batchSize?: number;
@@ -16,11 +16,14 @@ export interface BaseEvent {
   properties: Record<string, any>;
   context: {
     page_url: string;
+    page_path: string;
     page_title: string;
     referrer: string;
     user_agent: string;
     screen_width: number;
+    screen_height: number;
     language: string;
+    timezone: string;
   };
 }
 
