@@ -1,5 +1,5 @@
 export interface PulseConfig {
-  apiKey: string;
+  writeKey: string;
   apiUrl?: string;
   flushInterval?: number;
   batchSize?: number;
