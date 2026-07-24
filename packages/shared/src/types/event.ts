@@ -14,15 +14,26 @@ export interface NormalizedEvent {
   properties: Record<string, unknown>;
   context: {
     pageUrl: string;
+    pagePath?: string;
     pageTitle: string;
     referrer?: string;
     userAgent: string;
+    browserName?: string;
+    osName?: string;
+    deviceType?: string;
     screenWidth: number;
-    language: string;
+    screenHeight: number;
+    language?: string;
+    timezone?: string;
   };
+  contentId?: string;
+  contentType?: string;
   pageUrl: string;
+  pagePath?: string;
   referrer?: string;
-  userAgent: string;
-  language: string;
-  screenWidth: number;
+  browserName?: string;
+  osName?: string;
+  deviceType?: string;
+  language?: string;
+  timezone?: string;
 }

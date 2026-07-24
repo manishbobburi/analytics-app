@@ -1,4 +1,5 @@
 import { EventInput, NormalizedEvent } from '@app/shared';
+import { UAParser } from 'ua-parser-js';
 
 function normalizeTimestamp(timestamp: string | number | Date): Date {
   return new Date(timestamp);
@@ -17,6 +18,8 @@ function normalizeUserId(userId?: string): string | undefined {
 }
 
 function normalizeEvent(orgId: string, event: EventInput): NormalizedEvent {
+  const { browser, os, device } = UAParser(event.context.user_agent);
+
   return {
     eventId: event.event_id,
     event: normalizeEventName(event.event),
@@ -29,16 +32,25 @@ function normalizeEvent(orgId: string, event: EventInput): NormalizedEvent {
     context: {
       pageUrl: event.context.page_url,
       pageTitle: event.context.page_title,
+      pagePath: event.context.page_path,
       referrer: event.context.referrer,
       userAgent: event.context.user_agent,
+      browserName: browser.name ?? 'Unknown',
+      osName: os.name ?? 'Unknown',
+      deviceType: device.type ?? 'desktop',
       screenWidth: event.context.screen_width,
+      screenHeight: event.context.screen_height,
       language: event.context.language,
+      timezone: event.context.timezone,
     },
     pageUrl: event.context.page_url,
+    pagePath: event.context.page_path,
     referrer: event.context.referrer,
-    userAgent: event.context.user_agent,
+    browserName: browser.name ?? 'Unknown',
+    osName: os.name ?? 'Unknown',
+    deviceType: device.type ?? 'desktop',
     language: event.context.language,
-    screenWidth: event.context.screen_width,
+    timezone: event.context.timezone,
   };
 }
 
