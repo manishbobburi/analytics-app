@@ -26,4 +26,14 @@ async function getEvents(req: Request, res: Response) {
   return res.status(StatusCodes.OK).json(successResponse(events));
 }
 
-export { ingestEvents, getEvents };
+async function getEventByEventId(req: Request, res: Response) {
+  const user = req.user!;
+  const orgId = user.sub;
+  const eventId = req.params.eventId as string;
+
+  const event = await eventService.getEventByEventId(orgId, eventId);
+
+  return res.status(StatusCodes.OK).json(successResponse(event));
+}
+
+export { ingestEvents, getEvents, getEventByEventId };

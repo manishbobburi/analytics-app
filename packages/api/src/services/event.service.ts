@@ -64,4 +64,14 @@ async function getEvents(orgId: string, reqQuery: unknown) {
   };
 }
 
-export { getEvents };
+async function getEventByEventId(orgId: string, eventId: string) {
+  const event = await eventRepository.findByEventId(orgId, eventId);
+
+  if (!event) {
+    throw new AppError('Event not found', StatusCodes.NOT_FOUND, 'EVENT_NOT_FOUND');
+  }
+
+  return event;
+}
+
+export { getEvents, getEventByEventId };
