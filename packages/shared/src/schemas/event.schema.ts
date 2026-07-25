@@ -21,4 +21,33 @@ export const EventSchema = z.object({
   }),
 });
 
+export const GetEventSchema = z
+  .object({
+    page: z.coerce.number().int().min(1).default(1),
+    limit: z.coerce.number().int().min(1).max(100).default(20),
+    event: z.string().trim().optional(),
+    userId: z.string().trim().optional(),
+    anonId: z.string().trim().optional(),
+    sessionId: z.string().trim().optional(),
+    browserName: z.string().trim().optional(),
+    osName: z.string().trim().optional(),
+    deviceType: z.string().trim().optional(),
+    language: z.string().trim().optional(),
+    timezone: z.string().trim().optional(),
+    pagePath: z.string().trim().optional(),
+    from: z.coerce.date().optional(),
+    to: z.coerce.date().optional(),
+    sort: z.enum(['asc', 'desc']).default('desc'),
+  })
+  .refine(
+    ({ from, to }) => {
+      if (!from || !to) return true;
+      return from <= to;
+    },
+    {
+      message: "'from' date must be before or equal to 'to' date",
+      path: ['from'],
+    }
+  );
+
 export const BatchEventSchema = z.array(EventSchema).min(1);
