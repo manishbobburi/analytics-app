@@ -2,7 +2,7 @@ import { NormalizedEvent, EventFilters } from '@app/shared';
 import { prisma, Prisma } from '../client.js';
 import { BaseRepository } from './base.repository.js';
 
-const EVENT_SELECT = {
+const EVENT_LIST_SELECT = {
   id: true,
   eventId: true,
   event: true,
@@ -17,6 +17,33 @@ const EVENT_SELECT = {
   deviceType: true,
   properties: true,
 } as const;
+
+export const EVENT_DETAILS_SELECT = {
+  eventId: true,
+  event: true,
+  timestamp: true,
+
+  userId: true,
+  anonId: true,
+  sessionId: true,
+
+  contentId: true,
+  contentType: true,
+
+  pageUrl: true,
+  pagePath: true,
+  referrer: true,
+
+  browserName: true,
+  osName: true,
+  deviceType: true,
+
+  language: true,
+  timezone: true,
+
+  properties: true,
+  context: true,
+} satisfies Prisma.EventSelect;
 
 class EventRepository extends BaseRepository<any> {
   constructor() {
@@ -42,7 +69,7 @@ class EventRepository extends BaseRepository<any> {
 
     return prisma.event.findMany({
       where,
-      select: EVENT_SELECT,
+      select: EVENT_LIST_SELECT,
       skip,
       take,
       orderBy: {
@@ -56,6 +83,18 @@ class EventRepository extends BaseRepository<any> {
 
     return prisma.event.count({
       where,
+    });
+  }
+
+  async findByEventId(orgId: string, eventId: string) {
+    return prisma.event.findUnique({
+      where: {
+        orgId_eventId: {
+          orgId,
+          eventId,
+        },
+      },
+      select: EVENT_DETAILS_SELECT,
     });
   }
 
