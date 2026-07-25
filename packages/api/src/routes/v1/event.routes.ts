@@ -9,4 +9,6 @@ router.post('/', catchAsync(eventController.ingestEvents));
 
 router.get('/', authenticate, catchAsync(eventController.getEvents));
 
+router.get('/:eventId', authenticate, catchAsync(eventController.getEventByEventId));
+
 export default router;
