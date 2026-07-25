@@ -1,7 +1,8 @@
 import { z } from 'zod';
-import { EventSchema } from '../schemas/index.js';
+import { EventSchema, GetEventSchema } from '../schemas/index.js';
 
 export type EventInput = z.infer<typeof EventSchema>;
+export type GetEventsQuery = z.infer<typeof GetEventSchema>;
 
 export interface NormalizedEvent {
   eventId: string;
@@ -36,4 +37,24 @@ export interface NormalizedEvent {
   deviceType?: string;
   language?: string;
   timezone?: string;
+}
+
+export interface EventFilters {
+  orgId: string;
+  event?: string;
+  userId?: string;
+  anonId?: string;
+  sessionId?: string;
+  browserName?: string;
+  osName?: string;
+  deviceType?: string;
+  language?: string;
+  timezone?: string;
+  pagePath?: string;
+  from?: Date;
+  to?: Date;
+
+  skip: number;
+  take: number;
+  sort: 'asc' | 'desc';
 }
