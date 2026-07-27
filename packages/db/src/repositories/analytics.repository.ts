@@ -1,4 +1,4 @@
-import { OverviewFilters } from '@app/shared';
+import { OverviewFilters, EventTrendQuery, TrendInterval } from '@app/shared';
 import { prisma, Prisma } from '../client.js';
 
 class AnalyticsRepository {
@@ -16,6 +16,20 @@ class AnalyticsRepository {
           }
         : {}),
     };
+  }
+  private getDateTruncExpression(interval: TrendInterval) {
+    switch (interval) {
+      case 'hour':
+        return "'hour'";
+      case 'day':
+        return "'day'";
+      case 'week':
+        return "'week'";
+      case 'month':
+        return "'month'";
+      default:
+        throw new Error('Invalid interval');
+    }
   }
 
   async getTotalEvents(filters: OverviewFilters) {
@@ -75,6 +89,22 @@ class AnalyticsRepository {
         `;
 
     return Number(result[0].count);
+  }
+
+  async getEventTrend(query: EventTrendQuery) {
+    const { orgId, from, to, interval } = query;
+
+    const groupBy = this.getDateTruncExpression(interval);
+
+    return prisma.$queryRaw<
+      {
+        period: Date;
+        events: bigint;
+      }[]
+    >(Prisma.sql`
+      SELECT DATE_TRUNC(${Prisma.raw(groupBy)}, timestamp) AS period, COUNT(*) AS events FROM events
+      WHERE org_id = ${orgId} AND timestamp >= ${from} AND timestamp < ${to} GROUP BY period ORDER BY period ASC
+    `);
   }
 }
 
