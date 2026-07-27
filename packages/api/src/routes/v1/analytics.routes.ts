@@ -7,4 +7,6 @@ import catchAsync from '../../utils/catchAsync.js';
 
 router.get('/overview', authenticate, catchAsync(analyticsController.getOverview));
 
+router.get('/event-trend', authenticate, catchAsync(analyticsController.getEventTrend));
+
 export default router;
