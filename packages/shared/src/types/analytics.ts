@@ -16,4 +16,28 @@ interface OverviewResponse {
   sessions: number;
 }
 
-export { OverviewQuery, OverviewFilters, OverviewResponse };
+type TrendInterval = 'hour' | 'day' | 'week' | 'month';
+
+interface EventTrendQuery {
+  orgId: string;
+  from: Date;
+  to: Date;
+  interval: TrendInterval;
+}
+
+interface EventTrendPoint {
+  period: string;
+  events: number;
+}
+
+type EventTrendResponse = EventTrendPoint[];
+
+export {
+  OverviewQuery,
+  OverviewFilters,
+  OverviewResponse,
+  TrendInterval,
+  EventTrendQuery,
+  EventTrendPoint,
+  EventTrendResponse,
+};
