@@ -1,5 +1,12 @@
 import { analyticsRepository } from '@app/db';
-import { OverviewQuery, OverviewFilters, OverviewResponse } from '@app/shared';
+import {
+  OverviewQuery,
+  OverviewFilters,
+  OverviewResponse,
+  EventTrendQuery,
+  TrendInterval,
+  EventTrendResponse,
+} from '@app/shared';
 
 async function getOverview(orgId: string, query: OverviewQuery): Promise<OverviewResponse> {
   const { from, to } = query;
@@ -28,4 +35,77 @@ async function getOverview(orgId: string, query: OverviewQuery): Promise<Overvie
   };
 }
 
-export { getOverview };
+async function getEventTrend(query: EventTrendQuery): Promise<EventTrendResponse> {
+  const trend = await analyticsRepository.getEventTrend(query);
+
+  const counts = new Map(trend.map((t) => [t.period.toISOString(), Number(t.events)]));
+
+  const result: EventTrendResponse = [];
+
+  let cursor = floorToInterval(query.from, query.interval);
+
+  while (cursor <= query.to) {
+    const key = cursor.toISOString();
+
+    result.push({
+      period: key,
+      events: counts.get(key) ?? 0,
+    });
+
+    cursor = addInterval(cursor, query.interval);
+  }
+
+  return result;
+}
+
+function addInterval(date: Date, interval: TrendInterval): Date {
+  const next = new Date(date);
+
+  switch (interval) {
+    case 'hour':
+      next.setUTCHours(next.getUTCHours() + 1);
+      break;
+    case 'day':
+      next.setUTCDate(next.getUTCDate() + 1);
+      break;
+    case 'week':
+      next.setUTCDate(next.getUTCDate() + 7);
+      break;
+    case 'month':
+      next.setUTCMonth(next.getUTCMonth() + 1);
+      break;
+  }
+
+  return next;
+}
+
+function floorToInterval(date: Date, interval: TrendInterval): Date {
+  const result = new Date(date);
+
+  switch (interval) {
+    case 'hour':
+      result.setUTCMinutes(0, 0, 0);
+      break;
+    case 'day':
+      result.setUTCHours(0, 0, 0);
+      break;
+    case 'week': {
+      result.setUTCHours(0, 0, 0, 0);
+
+      const day = result.getUTCDay();
+      const diff = day === 0 ? -6 : 1 - day;
+
+      result.setUTCDate(result.getUTCDate() + diff);
+      break;
+    }
+    case 'month': {
+      result.setUTCHours(0, 0, 0, 0);
+      result.setUTCDate(1);
+      break;
+    }
+  }
+
+  return result;
+}
+
+export { getOverview, getEventTrend };

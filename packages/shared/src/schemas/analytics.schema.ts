@@ -15,3 +15,14 @@ export const GetOverviewQuerySchema = z
       path: ['from'],
     }
   );
+
+export const EventTrendQuerySchema = z
+  .object({
+    from: z.coerce.date(),
+    to: z.coerce.date(),
+    interval: z.enum(['hour', 'day', 'week', 'month']),
+  })
+  .refine(({ from, to }) => from <= to, {
+    message: "'from' date must be before or equal to 'to' date",
+    path: ['from'],
+  });
