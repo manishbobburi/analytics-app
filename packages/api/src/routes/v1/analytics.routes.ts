@@ -9,4 +9,6 @@ router.get('/overview', authenticate, catchAsync(analyticsController.getOverview
 
 router.get('/event-trend', authenticate, catchAsync(analyticsController.getEventTrend));
 
+router.get('/breakdown', authenticate, catchAsync(analyticsController.getBreakdown));
+
 export default router;

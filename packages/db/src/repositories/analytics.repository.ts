@@ -1,4 +1,4 @@
-import { OverviewFilters, EventTrendQuery, TrendInterval } from '@app/shared';
+import { OverviewFilters, EventTrendQuery, TrendInterval, BreakdownQuery } from '@app/shared';
 import { prisma, Prisma } from '../client.js';
 
 class AnalyticsRepository {
@@ -31,6 +31,14 @@ class AnalyticsRepository {
         throw new Error('Invalid interval');
     }
   }
+
+  private breakdownColumns = {
+    device: 'device_type',
+    os: 'os_name',
+    browser: 'browser_name',
+    language: 'language',
+    referrer: 'referrer',
+  } as const;
 
   async getTotalEvents(filters: OverviewFilters) {
     return prisma.event.count({
@@ -104,6 +112,22 @@ class AnalyticsRepository {
     >(Prisma.sql`
       SELECT DATE_TRUNC(${Prisma.raw(groupBy)}, timestamp) AS period, COUNT(*) AS events FROM events
       WHERE org_id = ${orgId} AND timestamp >= ${from} AND timestamp < ${to} GROUP BY period ORDER BY period ASC
+    `);
+  }
+
+  async getBreakdown(query: BreakdownQuery) {
+    const { orgId, from, to, dimension } = query;
+
+    const column = Prisma.raw(this.breakdownColumns[dimension]);
+
+    return prisma.$queryRaw<
+      {
+        label: string;
+        count: bigint;
+      }[]
+    >(Prisma.sql`
+      SELECT ${column} AS label, COUNT(*) as count FROM events 
+      WHERE org_id = ${orgId} AND timestamp >= ${from} AND timestamp < ${to} GROUP BY ${column} ORDER BY count DESC
     `);
   }
 }

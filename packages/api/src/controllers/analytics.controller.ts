@@ -5,6 +5,8 @@ import {
   GetOverviewQuerySchema,
   EventTrendQuery,
   EventTrendQuerySchema,
+  BreakdownQuery,
+  BreakdownQuerySchema,
 } from '@app/shared';
 import { analyticsService } from '../services/index.js';
 import { AppError } from '../error/index.js';
@@ -70,4 +72,36 @@ async function getEventTrend(req: Request, res: Response) {
   return res.status(StatusCodes.OK).json(successResponse(trend));
 }
 
-export { getOverview, getEventTrend };
+async function getBreakdown(req: Request, res: Response) {
+  const user = req.user!;
+  const orgId = user.sub;
+
+  const result = BreakdownQuerySchema.safeParse(req.query);
+
+  if (!result.success) {
+    throw new AppError(
+      'Invalid query parameters',
+      StatusCodes.BAD_REQUEST,
+      'INVALID_QUERY',
+      result.error.issues.map((issue) => ({
+        field: issue.path.join('.'),
+        message: issue.message,
+      }))
+    );
+  }
+
+  const { from, to, dimension } = result.data;
+
+  const query: BreakdownQuery = {
+    orgId,
+    from,
+    to,
+    dimension,
+  };
+
+  const breakdown = await analyticsService.getBreakdown(query);
+
+  return res.status(StatusCodes.OK).json(successResponse(breakdown));
+}
+
+export { getOverview, getEventTrend, getBreakdown };

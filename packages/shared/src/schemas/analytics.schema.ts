@@ -25,3 +25,7 @@ export const GetOverviewQuerySchema = OptionalDateRangeSchema;
 export const EventTrendQuerySchema = RequiredDateRangeSchema.extend({
   interval: z.enum(['hour', 'day', 'week', 'month']),
 });
+
+export const BreakdownQuerySchema = RequiredDateRangeSchema.extend({
+  dimension: z.enum(['device', 'browser', 'os', 'referrer', 'language']),
+});
