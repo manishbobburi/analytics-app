@@ -32,6 +32,22 @@ interface EventTrendPoint {
 
 type EventTrendResponse = EventTrendPoint[];
 
+type BreakdownDimension = 'device' | 'browser' | 'os' | 'referrer' | 'language';
+
+interface BreakdownQuery {
+  orgId: string;
+  from: Date;
+  to: Date;
+  dimension: BreakdownDimension;
+}
+
+interface BreakdownRecord {
+  label: string;
+  count: number;
+}
+
+type BreakdownResponse = BreakdownRecord[];
+
 export {
   OverviewQuery,
   OverviewFilters,
@@ -40,4 +56,8 @@ export {
   EventTrendQuery,
   EventTrendPoint,
   EventTrendResponse,
+  BreakdownDimension,
+  BreakdownQuery,
+  BreakdownRecord,
+  BreakdownResponse,
 };
