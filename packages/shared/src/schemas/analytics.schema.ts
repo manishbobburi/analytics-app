@@ -1,28 +1,27 @@
 import { z } from 'zod';
 
-export const GetOverviewQuerySchema = z
+export const OptionalDateRangeSchema = z
   .object({
     from: z.coerce.date().optional(),
     to: z.coerce.date().optional(),
   })
-  .refine(
-    ({ from, to }) => {
-      if (!from || !to) return true;
-      return from <= to;
-    },
-    {
-      message: "'from' date must be before or equal to 'to' date",
-      path: ['from'],
-    }
-  );
+  .refine(({ from, to }) => !from || !to || from <= to, {
+    message: "'from' date must be before or equal to 'to' date",
+    path: ['from'],
+  });
 
-export const EventTrendQuerySchema = z
+export const RequiredDateRangeSchema = z
   .object({
     from: z.coerce.date(),
     to: z.coerce.date(),
-    interval: z.enum(['hour', 'day', 'week', 'month']),
   })
   .refine(({ from, to }) => from <= to, {
     message: "'from' date must be before or equal to 'to' date",
     path: ['from'],
   });
+
+export const GetOverviewQuerySchema = OptionalDateRangeSchema;
+
+export const EventTrendQuerySchema = RequiredDateRangeSchema.extend({
+  interval: z.enum(['hour', 'day', 'week', 'month']),
+});
