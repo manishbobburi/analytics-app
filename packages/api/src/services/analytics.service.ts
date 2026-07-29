@@ -6,6 +6,8 @@ import {
   EventTrendQuery,
   TrendInterval,
   EventTrendResponse,
+  BreakdownQuery,
+  BreakdownResponse,
 } from '@app/shared';
 
 async function getOverview(orgId: string, query: OverviewQuery): Promise<OverviewResponse> {
@@ -58,6 +60,15 @@ async function getEventTrend(query: EventTrendQuery): Promise<EventTrendResponse
   return result;
 }
 
+async function getBreakdown(query: BreakdownQuery): Promise<BreakdownResponse> {
+  const rows = await analyticsRepository.getBreakdown(query);
+
+  return rows.map((row) => ({
+    label: row.label ?? 'Unknown',
+    count: Number(row.count),
+  }));
+}
+
 function addInterval(date: Date, interval: TrendInterval): Date {
   const next = new Date(date);
 
@@ -108,4 +119,4 @@ function floorToInterval(date: Date, interval: TrendInterval): Date {
   return result;
 }
 
-export { getOverview, getEventTrend };
+export { getOverview, getEventTrend, getBreakdown };
