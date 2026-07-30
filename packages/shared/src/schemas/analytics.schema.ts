@@ -42,3 +42,7 @@ export const EventTrendQuerySchema = RequiredDateRangeSchema.extend({
 export const BreakdownQuerySchema = RequiredDateRangeSchema.extend({
   dimension: z.enum(['device', 'browser', 'os', 'referrer', 'language']),
 });
+
+export const TopEventsQuerySchema = OptionalDateRangeSchema.extend({
+  k: z.coerce.number().int().min(1).max(100).default(10),
+});
