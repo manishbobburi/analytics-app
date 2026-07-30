@@ -48,6 +48,29 @@ interface BreakdownRecord {
 
 type BreakdownResponse = BreakdownRecord[];
 
+interface TopEventsQuery {
+  orgId: string;
+  from?: Date;
+  to?: Date;
+  k: number;
+}
+
+interface TopEvent {
+  event: string;
+  count: number;
+  percentage: number;
+}
+
+interface TopEventsResponse {
+  totalEvents: number;
+  topEvents: TopEvent[];
+}
+
+interface TopEventRecord {
+  event: string;
+  count: bigint;
+}
+
 export {
   OverviewQuery,
   OverviewFilters,
@@ -60,4 +83,8 @@ export {
   BreakdownQuery,
   BreakdownRecord,
   BreakdownResponse,
+  TopEventsQuery,
+  TopEvent,
+  TopEventRecord,
+  TopEventsResponse,
 };
