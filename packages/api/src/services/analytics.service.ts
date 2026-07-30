@@ -8,6 +8,9 @@ import {
   EventTrendResponse,
   BreakdownQuery,
   BreakdownResponse,
+  TopEventsQuery,
+  TopEventsResponse,
+  TopEvent,
 } from '@app/shared';
 
 async function getOverview(orgId: string, query: OverviewQuery): Promise<OverviewResponse> {
@@ -69,6 +72,32 @@ async function getBreakdown(query: BreakdownQuery): Promise<BreakdownResponse> {
   }));
 }
 
+async function getTopEvents(query: TopEventsQuery): Promise<TopEventsResponse> {
+  const [rows, totalEvents] = await Promise.all([
+    analyticsRepository.getTopEvents(query),
+    analyticsRepository.getTotalEvents({
+      orgId: query.orgId,
+      from: query.from,
+      to: query.to,
+    }),
+  ]);
+
+  const topEvents: TopEvent[] = rows.map((e) => {
+    const count = Number(e.count);
+
+    return {
+      event: e.event,
+      count,
+      percentage: Number(((count / totalEvents) * 100).toFixed(2)),
+    };
+  });
+
+  return {
+    totalEvents,
+    topEvents,
+  };
+}
+
 function addInterval(date: Date, interval: TrendInterval): Date {
   const next = new Date(date);
 
@@ -119,4 +148,4 @@ function floorToInterval(date: Date, interval: TrendInterval): Date {
   return result;
 }
 
-export { getOverview, getEventTrend, getBreakdown };
+export { getOverview, getEventTrend, getBreakdown, getTopEvents };

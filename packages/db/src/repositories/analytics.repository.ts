@@ -1,4 +1,11 @@
-import { OverviewFilters, EventTrendQuery, TrendInterval, BreakdownQuery } from '@app/shared';
+import {
+  OverviewFilters,
+  EventTrendQuery,
+  TrendInterval,
+  BreakdownQuery,
+  TopEventsQuery,
+  TopEventRecord,
+} from '@app/shared';
 import { prisma, Prisma } from '../client.js';
 
 class AnalyticsRepository {
@@ -128,6 +135,21 @@ class AnalyticsRepository {
     >(Prisma.sql`
       SELECT ${column} AS label, COUNT(*) as count FROM events 
       WHERE org_id = ${orgId} AND timestamp >= ${from} AND timestamp < ${to} GROUP BY ${column} ORDER BY count DESC
+    `);
+  }
+
+  async getTopEvents(query: TopEventsQuery) {
+    const { orgId, from, to, k } = query;
+
+    const where = Prisma.sql`
+      WHERE org_id = ${orgId}
+      ${from ? Prisma.sql`AND timestamp >= ${from}` : Prisma.empty}
+      ${to ? Prisma.sql`AND timestamp < ${to}` : Prisma.empty}
+    `;
+
+    return await prisma.$queryRaw<TopEventRecord[]>(Prisma.sql`
+      SELECT event, COUNT(*) as count FROM events ${where}
+      GROUP BY event ORDER BY COUNT(*) DESC, event ASC LIMIT ${k}
     `);
   }
 }
