@@ -11,6 +11,9 @@ import {
   TopEventsQuery,
   TopEventsResponse,
   TopEvent,
+  TopPagesQuery,
+  TopPagesResponse,
+  TopPage,
 } from '@app/shared';
 
 async function getOverview(orgId: string, query: OverviewQuery): Promise<OverviewResponse> {
@@ -88,13 +91,35 @@ async function getTopEvents(query: TopEventsQuery): Promise<TopEventsResponse> {
     return {
       event: e.event,
       count,
-      percentage: Number(((count / totalEvents) * 100).toFixed(2)),
+      percentage: totalEvents === 0 ? 0 : Number(((count / totalEvents) * 100).toFixed(2)),
     };
   });
 
   return {
     totalEvents,
     topEvents,
+  };
+}
+
+async function getTopPages(query: TopPagesQuery): Promise<TopPagesResponse> {
+  const [records, totalPageViews] = await Promise.all([
+    analyticsRepository.getTopPages(query),
+    analyticsRepository.getTotalPageViews(query),
+  ]);
+
+  const topPages: TopPage[] = records.map((e) => {
+    const count = Number(e.count);
+
+    return {
+      page: e.page,
+      count,
+      percentage: totalPageViews === 0 ? 0 : Number(((count / totalPageViews) * 100).toFixed(2)),
+    };
+  });
+
+  return {
+    totalPageViews,
+    topPages,
   };
 }
 
@@ -148,4 +173,4 @@ function floorToInterval(date: Date, interval: TrendInterval): Date {
   return result;
 }
 
-export { getOverview, getEventTrend, getBreakdown, getTopEvents };
+export { getOverview, getEventTrend, getBreakdown, getTopEvents, getTopPages };

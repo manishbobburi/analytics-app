@@ -46,3 +46,7 @@ export const BreakdownQuerySchema = RequiredDateRangeSchema.extend({
 export const TopEventsQuerySchema = OptionalDateRangeSchema.extend({
   k: z.coerce.number().int().min(1).max(100).default(10),
 });
+
+export const TopPagesQuerySchema = OptionalDateRangeSchema.extend({
+  k: z.coerce.number().int().min(1).max(100).default(10),
+});

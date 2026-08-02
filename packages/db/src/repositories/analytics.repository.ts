@@ -5,6 +5,8 @@ import {
   BreakdownQuery,
   TopEventsQuery,
   TopEventRecord,
+  TopPagesQuery,
+  TopPageRecord,
 } from '@app/shared';
 import { prisma, Prisma } from '../client.js';
 
@@ -151,6 +153,34 @@ class AnalyticsRepository {
       SELECT event, COUNT(*) as count FROM events ${where}
       GROUP BY event ORDER BY COUNT(*) DESC, event ASC LIMIT ${k}
     `);
+  }
+
+  async getTopPages(query: TopPagesQuery) {
+    const { orgId, from, to, k } = query;
+
+    const where = Prisma.sql`
+      WHERE org_id = ${orgId}
+      ${from ? Prisma.sql`AND timestamp >= ${from}` : Prisma.empty}
+      ${to ? Prisma.sql`AND timestamp < ${to}` : Prisma.empty}
+    `;
+
+    return await prisma.$queryRaw<TopPageRecord[]>(Prisma.sql`
+      SELECT page_path as page, COUNT(*) as count FROM events ${where}
+      AND page_path IS NOT NULL AND page_path <> '' GROUP BY page_path ORDER BY COUNT(*) DESC, page_path ASC LIMIT ${k}
+    `);
+  }
+
+  async getTotalPageViews(query: TopPagesQuery) {
+    const where = this.buildWhere(query);
+
+    return prisma.event.count({
+      where: {
+        ...where,
+        pagePath: {
+          not: null,
+        },
+      },
+    });
   }
 }
 

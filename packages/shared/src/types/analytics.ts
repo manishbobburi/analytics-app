@@ -71,6 +71,29 @@ interface TopEventRecord {
   count: bigint;
 }
 
+interface TopPagesQuery {
+  orgId: string;
+  from?: Date;
+  to?: Date;
+  k: number;
+}
+
+interface TopPage {
+  page: string;
+  count: number;
+  percentage: number;
+}
+
+interface TopPagesResponse {
+  totalPageViews: number;
+  topPages: TopPage[];
+}
+
+interface TopPageRecord {
+  page: string;
+  count: bigint;
+}
+
 export {
   OverviewQuery,
   OverviewFilters,
@@ -87,4 +110,8 @@ export {
   TopEvent,
   TopEventRecord,
   TopEventsResponse,
+  TopPagesQuery,
+  TopPage,
+  TopPagesResponse,
+  TopPageRecord,
 };
