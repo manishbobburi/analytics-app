@@ -12,4 +12,7 @@ router.get('/event-trend', authenticate, catchAsync(analyticsController.getEvent
 router.get('/breakdown', authenticate, catchAsync(analyticsController.getBreakdown));
 
 router.get('/top-events', authenticate, catchAsync(analyticsController.getTopEvents));
+
+router.get('/top-pages', authenticate, catchAsync(analyticsController.getTopPages));
+
 export default router;

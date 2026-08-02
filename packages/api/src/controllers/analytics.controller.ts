@@ -9,6 +9,7 @@ import {
   BreakdownQuerySchema,
   TopEventsQuerySchema,
   TopEventsQuery,
+  TopPagesQuerySchema,
 } from '@app/shared';
 import { analyticsService } from '../services/index.js';
 import { AppError } from '../error/index.js';
@@ -138,4 +139,36 @@ async function getTopEvents(req: Request, res: Response) {
   return res.status(StatusCodes.OK).json(successResponse(topEvents));
 }
 
-export { getOverview, getEventTrend, getBreakdown, getTopEvents };
+async function getTopPages(req: Request, res: Response) {
+  const user = req.user!;
+  const orgId = user.sub;
+
+  const result = TopPagesQuerySchema.safeParse(req.query);
+
+  if (!result.success) {
+    throw new AppError(
+      'Invalid query parameters',
+      StatusCodes.BAD_REQUEST,
+      'INVALID_QUERY',
+      result.error.issues.map((issue) => ({
+        field: issue.path.join('.'),
+        message: issue.message,
+      }))
+    );
+  }
+
+  const { from, to, k } = result.data;
+
+  const query: TopEventsQuery = {
+    orgId,
+    from,
+    to,
+    k,
+  };
+
+  const topPages = await analyticsService.getTopPages(query);
+
+  return res.status(StatusCodes.OK).json(successResponse(topPages));
+}
+
+export { getOverview, getEventTrend, getBreakdown, getTopEvents, getTopPages };
