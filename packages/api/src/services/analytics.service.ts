@@ -18,14 +18,11 @@ import {
 
 async function getOverview(orgId: string, query: OverviewQuery): Promise<OverviewResponse> {
   const { from, to } = query;
-  const inclusiveTo = to ? new Date(to) : undefined;
-
-  if (inclusiveTo) inclusiveTo.setDate(inclusiveTo.getDate() + 1);
 
   const filters: OverviewFilters = {
     orgId,
     from,
-    to: inclusiveTo,
+    to,
   };
 
   const [totalEvents, uniqueUsers, anonymousUsers, sessions] = await Promise.all([
