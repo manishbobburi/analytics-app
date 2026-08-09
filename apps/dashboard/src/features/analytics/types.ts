@@ -16,3 +16,8 @@ export interface DashboardDateRange {
   from?: string;
   to?: string;
 }
+
+export interface ResolvedDateRange {
+  from: Date;
+  to: Date;
+}
