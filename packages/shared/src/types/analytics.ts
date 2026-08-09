@@ -1,12 +1,12 @@
 interface OverviewQuery {
-  from?: Date;
-  to?: Date;
+  from: Date;
+  to: Date;
 }
 
 interface OverviewFilters {
   orgId: string;
-  from?: Date;
-  to?: Date;
+  from: Date;
+  to: Date;
 }
 
 interface OverviewResponse {
@@ -50,8 +50,8 @@ type BreakdownResponse = BreakdownRecord[];
 
 interface TopEventsQuery {
   orgId: string;
-  from?: Date;
-  to?: Date;
+  from: Date;
+  to: Date;
   k: number;
 }
 
@@ -73,8 +73,8 @@ interface TopEventRecord {
 
 interface TopPagesQuery {
   orgId: string;
-  from?: Date;
-  to?: Date;
+  from: Date;
+  to: Date;
   k: number;
 }
 

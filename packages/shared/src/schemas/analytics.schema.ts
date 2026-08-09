@@ -33,7 +33,7 @@ export const RequiredDateRangeSchema = z
     path: ['from'],
   });
 
-export const GetOverviewQuerySchema = OptionalDateRangeSchema;
+export const GetOverviewQuerySchema = RequiredDateRangeSchema;
 
 export const EventTrendQuerySchema = RequiredDateRangeSchema.extend({
   interval: z.enum(['hour', 'day', 'week', 'month']),
@@ -43,10 +43,10 @@ export const BreakdownQuerySchema = RequiredDateRangeSchema.extend({
   dimension: z.enum(['device', 'browser', 'os', 'referrer', 'language']),
 });
 
-export const TopEventsQuerySchema = OptionalDateRangeSchema.extend({
+export const TopEventsQuerySchema = RequiredDateRangeSchema.extend({
   k: z.coerce.number().int().min(1).max(100).default(10),
 });
 
-export const TopPagesQuerySchema = OptionalDateRangeSchema.extend({
+export const TopPagesQuerySchema = RequiredDateRangeSchema.extend({
   k: z.coerce.number().int().min(1).max(100).default(10),
 });
