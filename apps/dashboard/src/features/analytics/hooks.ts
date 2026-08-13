@@ -1,11 +1,14 @@
 import { useCallback, useMemo } from 'react';
 import { useSearchParams } from 'react-router-dom';
+import { useQuery } from '@tanstack/react-query';
 
 import {
   parseDashboardDateRange,
   setDashboardDateRange,
   resolveDashboardDateRange,
 } from './date-range';
+import { getOverview } from './api';
+import { analyticsKeys } from './query-keys';
 import type { DashboardDateRange } from './types';
 
 export function useDashboardDateRange() {
@@ -29,4 +32,13 @@ export function useDashboardDateRange() {
     resolveDateRange,
     setDateRange,
   };
+}
+
+export function useOverview() {
+  const { resolveDateRange } = useDashboardDateRange();
+
+  return useQuery({
+    queryKey: analyticsKeys.overview(resolveDateRange),
+    queryFn: () => getOverview(resolveDateRange),
+  });
 }
