@@ -7,16 +7,17 @@ import {
   setDashboardDateRange,
   resolveDashboardDateRange,
 } from './date-range';
-import { getOverview } from './api';
+import { parseEventTrendInterval, setEventTrendInterval } from './event-trend';
+import { getOverview, getEventTrend } from './api';
 import { analyticsKeys } from './query-keys';
-import type { DashboardDateRange } from './types';
+import type { DashboardDateRange, EventTrendInterval } from './types';
 
 export function useDashboardDateRange() {
   const [searchParams, setSearchParams] = useSearchParams();
 
   const dateRange = useMemo(() => parseDashboardDateRange(searchParams), [searchParams]);
 
-  const resolveDateRange = useMemo(() => resolveDashboardDateRange(dateRange), [dateRange]);
+  const resolvedDateRange = useMemo(() => resolveDashboardDateRange(dateRange), [dateRange]);
 
   const setDateRange = useCallback(
     (nextRange: DashboardDateRange) => {
@@ -29,16 +30,51 @@ export function useDashboardDateRange() {
 
   return {
     dateRange,
-    resolveDateRange,
+    resolvedDateRange,
     setDateRange,
   };
 }
 
 export function useOverview() {
-  const { resolveDateRange } = useDashboardDateRange();
+  const { resolvedDateRange } = useDashboardDateRange();
 
   return useQuery({
-    queryKey: analyticsKeys.overview(resolveDateRange),
-    queryFn: () => getOverview(resolveDateRange),
+    queryKey: analyticsKeys.overview(resolvedDateRange),
+    queryFn: () => getOverview(resolvedDateRange),
   });
+}
+
+export function useEventTrend() {
+  const [searchParams, setSearchParams] = useSearchParams();
+  const { resolvedDateRange } = useDashboardDateRange();
+
+  const interval = useMemo(() => parseEventTrendInterval(searchParams), [searchParams]);
+
+  const query = useMemo(
+    () => ({
+      ...resolvedDateRange,
+      interval,
+    }),
+    [resolvedDateRange, interval]
+  );
+
+  const setInterval = useCallback(
+    (nextInterval: EventTrendInterval) => {
+      const nextParams = setEventTrendInterval(searchParams, nextInterval);
+
+      setSearchParams(nextParams);
+    },
+    [searchParams, searchParams]
+  );
+
+  const queryResult = useQuery({
+    queryKey: analyticsKeys.eventTrend(query),
+    queryFn: () => getEventTrend(query),
+  });
+
+  return {
+    ...queryResult,
+    interval,
+    setInterval,
+  };
 }
