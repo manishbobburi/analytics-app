@@ -1,3 +1,10 @@
+export type {
+  OverviewQuery,
+  OverviewResponse,
+  EventTrendPoint,
+  EventTrendResponse,
+} from '@app/shared';
+
 export const DATE_RANGE_PRESETS = [
   'today',
   'yesterday',
@@ -20,4 +27,14 @@ export interface DashboardDateRange {
 export interface ResolvedDateRange {
   from: Date;
   to: Date;
+}
+
+export const EVENT_TREND_INTERVALS = ['hour', 'day', 'week'] as const;
+
+export type EventTrendInterval = (typeof EVENT_TREND_INTERVALS)[number];
+
+export interface EventTrendQuery {
+  from: Date;
+  to: Date;
+  interval: EventTrendInterval;
 }
