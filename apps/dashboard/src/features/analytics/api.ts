@@ -6,6 +6,8 @@ import type {
   EventTrendResponse,
   TopPagesQuery,
   TopPagesResponse,
+  TopEventsQuery,
+  TopEventsResponse,
 } from './types';
 
 export async function getOverview(query: OverviewQuery): Promise<OverviewResponse> {
@@ -30,6 +32,16 @@ export async function getTopPages(query: TopPagesQuery): Promise<TopPagesRespons
       from: query.from,
       to: query.to,
       k: query.k,
+    },
+  });
+}
+
+export async function getTopEvents(query: TopEventsQuery): Promise<TopEventsResponse> {
+  return api.get<TopEventsResponse>('/analytics/top-events', {
+    params: {
+      from: query.from,
+      to: query.to,
+      k: query.events_top,
     },
   });
 }

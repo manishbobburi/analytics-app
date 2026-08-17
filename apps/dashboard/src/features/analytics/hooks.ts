@@ -9,7 +9,8 @@ import {
 } from './date-range';
 import { parseEventTrendInterval, setEventTrendInterval } from './event-trend';
 import { parseTopPagesK, setTopPagesK } from './top-pages';
-import { getOverview, getEventTrend, getTopPages } from './api';
+import { parseTopEvents, setTopEvents } from './top-events';
+import { getOverview, getEventTrend, getTopPages, getTopEvents } from './api';
 import { analyticsKeys } from './query-keys';
 import type { DashboardDateRange, EventTrendInterval, TopPagesPreset } from './types';
 
@@ -112,5 +113,40 @@ export function useTopPages() {
     ...queryResult,
     k,
     setK,
+  };
+}
+
+export function useTopEvents() {
+  const [searchParams, setSearchParams] = useSearchParams();
+  const { resolvedDateRange } = useDashboardDateRange();
+
+  const events_top = useMemo(() => parseTopEvents(searchParams), [searchParams]);
+
+  const query = useMemo(
+    () => ({
+      ...resolvedDateRange,
+      events_top,
+    }),
+    [resolvedDateRange, events_top]
+  );
+
+  const setTopEventsParams = useCallback(
+    (nextTopEvents: TopPagesPreset) => {
+      const nextParams = setTopEvents(searchParams, nextTopEvents);
+
+      setSearchParams(nextParams);
+    },
+    [searchParams, setSearchParams]
+  );
+
+  const queryResult = useQuery({
+    queryKey: analyticsKeys.topEvents(query),
+    queryFn: () => getTopEvents(query),
+  });
+
+  return {
+    ...queryResult,
+    events_top,
+    setTopEventsParams,
   };
 }
