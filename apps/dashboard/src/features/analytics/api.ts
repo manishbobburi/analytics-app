@@ -1,5 +1,12 @@
 import { api } from '@/lib/api';
-import type { OverviewQuery, OverviewResponse, EventTrendQuery, EventTrendResponse } from './types';
+import type {
+  OverviewQuery,
+  OverviewResponse,
+  EventTrendQuery,
+  EventTrendResponse,
+  TopPagesQuery,
+  TopPagesResponse,
+} from './types';
 
 export async function getOverview(query: OverviewQuery): Promise<OverviewResponse> {
   return api.get<OverviewResponse>('/analytics/overview', {
@@ -13,6 +20,16 @@ export async function getEventTrend(query: EventTrendQuery): Promise<EventTrendR
       from: query.from,
       to: query.to,
       interval: query.interval,
+    },
+  });
+}
+
+export async function getTopPages(query: TopPagesQuery): Promise<TopPagesResponse> {
+  return api.get<TopPagesResponse>('/analytics/top-pages', {
+    params: {
+      from: query.from,
+      to: query.to,
+      k: query.k,
     },
   });
 }
