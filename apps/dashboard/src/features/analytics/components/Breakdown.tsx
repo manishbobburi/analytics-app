@@ -51,7 +51,7 @@ export function Breakdown() {
       <CardHeader className="flex flex-row items-center justify-between">
         <div className="flex flex-1 flex-col justify-center gap-1 px-6 pb-3 sm:pb-0">
           <CardTitle>Breakdown</CardTitle>
-          <CardDescription>January - June 2024</CardDescription>
+          <CardDescription>Events by selected dimension</CardDescription>
         </div>
 
         <DimensionSelect value={dimension} onChange={setDimension} />
