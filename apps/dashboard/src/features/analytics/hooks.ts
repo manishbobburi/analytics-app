@@ -10,15 +10,9 @@ import {
 import { parseEventTrendInterval, setEventTrendInterval } from './event-trend';
 import { parseTopPagesK, setTopPagesK } from './top-pages';
 import { parseTopEvents, setTopEvents } from './top-events';
-import { getOverview, getEventTrend, getTopPages, getTopEvents, getBreakdown } from './api';
+import { getOverview, getEventTrend, getTopPages, getTopEvents } from './api';
 import { analyticsKeys } from './query-keys';
-import type {
-  DashboardDateRange,
-  EventTrendInterval,
-  TopPagesPreset,
-  BreakdownDimensionPreset,
-} from './types';
-import { parseDimension, setBreakdownDimension } from './breakdown';
+import type { DashboardDateRange, EventTrendInterval, TopPagesPreset } from './types';
 
 export function useDashboardDateRange() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -154,40 +148,5 @@ export function useTopEvents() {
     ...queryResult,
     events_top,
     setTopEventsParams,
-  };
-}
-
-export function useBreakdown() {
-  const [searchParams, setSearchParams] = useSearchParams();
-  const { resolvedDateRange } = useDashboardDateRange();
-
-  const dimension = useMemo(() => parseDimension(searchParams), [searchParams]);
-
-  const query = useMemo(
-    () => ({
-      ...resolvedDateRange,
-      dimension,
-    }),
-    [resolvedDateRange, dimension]
-  );
-
-  const setDimension = useCallback(
-    (nextDimension: BreakdownDimensionPreset) => {
-      const nextParams = setBreakdownDimension(searchParams, nextDimension);
-
-      setSearchParams(nextParams);
-    },
-    [searchParams, setSearchParams]
-  );
-
-  const queryResult = useQuery({
-    queryKey: analyticsKeys.breakdown(query),
-    queryFn: () => getBreakdown(query),
-  });
-
-  return {
-    ...queryResult,
-    dimension,
-    setDimension,
   };
 }

@@ -8,8 +8,6 @@ import type {
   TopPagesResponse,
   TopEventsQuery,
   TopEventsResponse,
-  BreakdownQuery,
-  BreakdownResponse,
 } from './types';
 
 export async function getOverview(query: OverviewQuery): Promise<OverviewResponse> {
@@ -44,16 +42,6 @@ export async function getTopEvents(query: TopEventsQuery): Promise<TopEventsResp
       from: query.from,
       to: query.to,
       k: query.events_top,
-    },
-  });
-}
-
-export async function getBreakdown(query: BreakdownQuery): Promise<BreakdownResponse> {
-  return api.get<BreakdownResponse>('/analytics/breakdown', {
-    params: {
-      from: query.from,
-      to: query.to,
-      dimension: query.dimension,
     },
   });
 }
