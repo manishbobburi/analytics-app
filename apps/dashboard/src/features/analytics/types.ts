@@ -3,6 +3,8 @@ export type {
   OverviewResponse,
   EventTrendPoint,
   EventTrendResponse,
+  TopPage,
+  TopPagesResponse,
 } from '@app/shared';
 
 export const DATE_RANGE_PRESETS = [
@@ -37,4 +39,14 @@ export interface EventTrendQuery {
   from: Date;
   to: Date;
   interval: EventTrendInterval;
+}
+
+export const TOP_K_PRESETS = ['5', '7'] as const;
+
+export type TopPagesPreset = (typeof TOP_K_PRESETS)[number];
+
+export interface TopPagesQuery {
+  from: Date;
+  to: Date;
+  k: TopPagesPreset;
 }
