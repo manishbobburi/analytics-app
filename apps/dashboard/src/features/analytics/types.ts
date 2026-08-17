@@ -7,6 +7,8 @@ export type {
   TopPagesResponse,
   TopEvent,
   TopEventsResponse,
+  BreakdownRecord,
+  BreakdownResponse,
 } from '@app/shared';
 
 export const DATE_RANGE_PRESETS = [
@@ -59,4 +61,14 @@ export interface TopEventsQuery {
   from: Date;
   to: Date;
   events_top: TopEventsPreset;
+}
+
+export const BREAKDOWN_DIMENSIONS = ['device', 'browser', 'os', 'referrer'] as const;
+
+export type BreakdownDimensionPreset = (typeof BREAKDOWN_DIMENSIONS)[number];
+
+export interface BreakdownQuery {
+  from: Date;
+  to: Date;
+  dimension: BreakdownDimensionPreset;
 }
