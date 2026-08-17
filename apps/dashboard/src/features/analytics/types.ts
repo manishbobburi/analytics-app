@@ -5,6 +5,8 @@ export type {
   EventTrendResponse,
   TopPage,
   TopPagesResponse,
+  TopEvent,
+  TopEventsResponse,
 } from '@app/shared';
 
 export const DATE_RANGE_PRESETS = [
@@ -49,4 +51,12 @@ export interface TopPagesQuery {
   from: Date;
   to: Date;
   k: TopPagesPreset;
+}
+
+export type TopEventsPreset = (typeof TOP_K_PRESETS)[number];
+
+export interface TopEventsQuery {
+  from: Date;
+  to: Date;
+  events_top: TopEventsPreset;
 }

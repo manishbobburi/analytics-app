@@ -1,4 +1,4 @@
-import type { OverviewQuery, EventTrendQuery, TopPagesQuery } from './types';
+import type { OverviewQuery, EventTrendQuery, TopPagesQuery, TopEventsQuery } from './types';
 
 export const analyticsKeys = {
   all: ['analytics'] as const,
@@ -22,5 +22,14 @@ export const analyticsKeys = {
       query.from.toISOString(),
       query.to.toISOString(),
       query.k,
+    ] as const,
+
+  topEvents: (query: TopEventsQuery) =>
+    [
+      ...analyticsKeys.all,
+      'top-events',
+      query.from.toISOString(),
+      query.to.toISOString(),
+      query.events_top,
     ] as const,
 };
