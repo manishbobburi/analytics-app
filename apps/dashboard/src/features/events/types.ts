@@ -1,10 +1,14 @@
 import { type EventFilters } from '@app/shared';
 
-export type EventFiltersInput = Omit<EventFilters, 'orgId' | 'skip' | 'take'>;
+export const EVENTS_PAGE_SIZE_OPTIONS = ['10', '20', '50', '100'] as const;
+
+export type EventsPageSize = (typeof EVENTS_PAGE_SIZE_OPTIONS)[number];
+
+export type EventFiltersInput = Omit<EventFilters, 'orgId' | 'skip' | 'take' | 'sort'>;
 
 export interface EventsQuery extends EventFiltersInput {
-  page: number;
-  limit: number;
+  page: string;
+  limit: EventsPageSize;
 }
 
 export interface EventListItem {

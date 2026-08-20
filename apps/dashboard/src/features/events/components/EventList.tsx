@@ -1,35 +1,38 @@
-import { useState } from 'react';
+import { useEffect } from 'react';
 
 import { EventsTablePagination } from './EventTablePagination';
 import { EventsTable } from './EventTable';
 import { EmptyEvents } from './EmptyEvents';
 import { EventTableSkeleton } from './EventsTableSkeleton';
 import { useEvents } from '../hooks';
-import type { EventsQuery } from '../types';
 
 export function EventsList() {
-  const [page, setPage] = useState(1);
-  const [limit, setLimit] = useState(10);
-
-  const EQuery: EventsQuery = {
-    page,
-    limit,
-    sort: 'desc',
-  };
-
-  const { data, isPending } = useEvents(EQuery);
+  const { data, isPending, page, setPageParam, setLimitParam } = useEvents();
 
   const events = data?.events ?? [];
   const pagination = data?.pagination;
 
-  function handlePageChange(nextPage: number) {
-    setPage(nextPage);
-  }
+  useEffect(() => {
+    if (!data?.pagination) {
+      return;
+    }
 
-  function handleLimitChange(nextLimit: number) {
-    setLimit(nextLimit);
-    setPage(1);
-  }
+    const totalPages = data.pagination.totalPages;
+
+    if (totalPages === 0) {
+      if (page !== '1') {
+        setPageParam('1');
+      }
+
+      return;
+    }
+
+    const currentPage = Number(page);
+
+    if (currentPage > totalPages) {
+      setPageParam(String(totalPages));
+    }
+  }, [data?.pagination, page, setPageParam]);
 
   if (isPending) {
     return <EventTableSkeleton />;
@@ -38,6 +41,7 @@ export function EventsList() {
   if (events.length == 0) {
     return <EmptyEvents />;
   }
+
   return (
     <div>
       <EventsTable data={events} />
@@ -50,8 +54,8 @@ export function EventsList() {
           totalPages={pagination.totalPages}
           hasNext={pagination.hasNext}
           isLoading={isPending}
-          onPageChange={handlePageChange}
-          onLimitChange={handleLimitChange}
+          onPageChange={setPageParam}
+          onLimitChange={setLimitParam}
         />
       )}
     </div>
