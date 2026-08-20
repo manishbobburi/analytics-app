@@ -8,6 +8,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
+import type { EventsPageSize } from '../types';
 
 interface EventsTablePaginationProps {
   page: number;
@@ -16,9 +17,8 @@ interface EventsTablePaginationProps {
   totalPages: number;
   hasNext: boolean;
   isLoading?: boolean;
-
-  onPageChange: (page: number) => void;
-  onLimitChange: (limit: number) => void;
+  onPageChange: (page: string) => void;
+  onLimitChange: (limit: EventsPageSize) => void;
 }
 
 const PAGE_SIZE_OPTIONS = [10, 20, 50, 100];
@@ -33,7 +33,8 @@ export function EventsTablePagination({
   onPageChange,
   onLimitChange,
 }: EventsTablePaginationProps) {
-  const hasPrevious = page > 1;
+  const currentPage = Number(page);
+  const hasPrevious = currentPage > 1;
 
   return (
     <div className="flex flex-col gap-4 px-4 py-3 sm:flex-row sm:items-center sm:justify-between">
@@ -48,7 +49,7 @@ export function EventsTablePagination({
           <Select
             value={String(limit)}
             onValueChange={(value) => {
-              onLimitChange(Number(value));
+              onLimitChange(value as EventsPageSize);
             }}
             disabled={isLoading}
           >
@@ -70,14 +71,13 @@ export function EventsTablePagination({
           Page {page} of {Math.max(totalPages, 1)}
         </div>
 
-        {/* Navigation */}
         <div className="flex items-center gap-1">
           <Button
             variant="outline"
             size="icon"
             className="h-8 w-8"
             disabled={!hasPrevious || isLoading}
-            onClick={() => onPageChange(page - 1)}
+            onClick={() => onPageChange(String(page - 1))}
             aria-label="Previous page"
           >
             <ChevronLeft className="h-4 w-4" />
@@ -88,7 +88,7 @@ export function EventsTablePagination({
             size="icon"
             className="h-8 w-8"
             disabled={!hasNext || isLoading}
-            onClick={() => onPageChange(page + 1)}
+            onClick={() => onPageChange(String(page + 1))}
             aria-label="Next page"
           >
             <ChevronRight className="h-4 w-4" />
