@@ -43,3 +43,47 @@ export interface EventsResponse {
   events: EventListItem[];
   pagination: EventsPagination;
 }
+
+export interface EventContext {
+  osName?: string | null;
+  pageUrl?: string | null;
+  language?: string | null;
+  pagePath?: string | null;
+  referrer?: string | null;
+  timezone?: string | null;
+  pageTitle?: string | null;
+  userAgent?: string | null;
+  deviceType?: string | null;
+  browserName?: string | null;
+  screenWidth?: number | null;
+  screenHeight?: number | null;
+}
+
+export interface EventDetail {
+  eventId: string;
+  event: string;
+  timestamp: string;
+
+  userId: string | null;
+  anonId: string | null;
+  sessionId: string | null;
+
+  contentId: string | null;
+  contentType: string | null;
+
+  pageUrl: string;
+  pagePath: string;
+  referrer: string;
+
+  browserName: string;
+  osName: string;
+  deviceType: string;
+
+  language: string;
+  timezone: string;
+
+  properties: Record<string, unknown>;
+  context: EventContext;
+}
+
+export type EventResponse = EventDetail;
