@@ -1,13 +1,15 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 import { EventsTablePagination } from './EventTablePagination';
 import { EventsTable } from './EventTable';
 import { EmptyEvents } from './EmptyEvents';
 import { EventTableSkeleton } from './EventsTableSkeleton';
+import { EventDetailsSheet } from './event-details/EventDetailsSheet';
 import { useEvents } from '../hooks';
 
 export function EventsList() {
   const { data, isPending, page, setPageParam, setLimitParam } = useEvents();
+  const [selectedEventId, setSelectedEventId] = useState<string | null>(null);
 
   const events = data?.events ?? [];
   const pagination = data?.pagination;
@@ -44,7 +46,12 @@ export function EventsList() {
 
   return (
     <div>
-      <EventsTable data={events} />
+      <EventsTable
+        data={events}
+        onRowClick={(event) => {
+          setSelectedEventId(event.eventId);
+        }}
+      />
 
       {pagination && (
         <EventsTablePagination
@@ -58,6 +65,16 @@ export function EventsList() {
           onLimitChange={setLimitParam}
         />
       )}
+
+      <EventDetailsSheet
+        eventId={selectedEventId}
+        open={selectedEventId !== null}
+        onOpenChange={(open) => {
+          if (!open) {
+            setSelectedEventId(null);
+          }
+        }}
+      />
     </div>
   );
 }

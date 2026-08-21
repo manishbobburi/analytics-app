@@ -2,7 +2,7 @@ import { useCallback, useMemo } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { keepPreviousData, useQuery } from '@tanstack/react-query';
 
-import { getEvents } from './api';
+import { getEvents, getEvent } from './api';
 import { eventsKeys } from './query-keys';
 import type { EventsPageSize } from './types';
 import { parseLimit, parsePage, setPage, setLimit } from './events';
@@ -63,4 +63,12 @@ export function useEvents() {
     setPageParam,
     setLimitParam,
   };
+}
+
+export function useEvent(eventId: string | null) {
+  return useQuery({
+    queryKey: eventsKeys.detail(eventId ?? ''),
+    queryFn: () => getEvent(eventId!),
+    enabled: Boolean(eventId),
+  });
 }
