@@ -12,6 +12,11 @@ export interface GetWriteKeysResponse {
   writeKeys: WriteKey[];
 }
 
+export interface CreateWriteKeyInput {
+  label: string;
+  allowedDomains: string[];
+}
+
 export interface CreateWriteKeyResponse {
   writeKey: string;
 }
