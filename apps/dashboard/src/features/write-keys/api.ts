@@ -6,5 +6,9 @@ export async function getWriteKeys() {
 }
 
 export async function createWriteKey(input: CreateWriteKeyInput): Promise<CreateWriteKeyResponse> {
-  return await api.post<CreateWriteKeyResponse>('/writeKey', input);
+  return api.post<CreateWriteKeyResponse>('/writeKey', input);
+}
+
+export async function revokeWriteKey(writeKeyId: string) {
+  return api.post<{}>(`/writeKey/${writeKeyId}/revoke`);
 }

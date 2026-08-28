@@ -1,7 +1,11 @@
-import { Outlet } from 'react-router-dom';
-
 import { AppLayout } from '@/components/layout/AppLayout';
+import { Toaster } from '@/components/ui/toast';
 
 export default function RootLayout() {
-  return <AppLayout />;
+  return (
+    <>
+      <AppLayout />
+      <Toaster />
+    </>
+  );
 }
