@@ -13,4 +13,10 @@ router.get(
   catchAsync(writeKeyController.listWriteKeys)
 );
 
+router.post(
+  '/:writeKeyId/revoke',
+  authMiddleware.authenticate,
+  catchAsync(writeKeyController.revokeWriteKey)
+);
+
 export default router;

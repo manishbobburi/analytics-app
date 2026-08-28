@@ -17,6 +17,15 @@ class WriteKeyRepository extends BaseRepository<any> {
   async findWriteKeys(args?: Prisma.WriteKeyFindManyArgs) {
     return await prisma.writeKey.findMany(args);
   }
+
+  async findWriteKeyById(orgId: string, writeKeyId: string) {
+    return prisma.writeKey.findFirst({
+      where: {
+        orgId,
+        id: writeKeyId,
+      },
+    });
+  }
 }
 
 export const writeKeyRepository = new WriteKeyRepository();
