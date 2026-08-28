@@ -74,6 +74,7 @@ async function listWriteKeys(orgId: string) {
       label: true,
       allowedDomains: true,
       isActive: true,
+      revokedAt: true,
       lastUsedAt: true,
       createdAt: true,
     },
@@ -83,6 +84,25 @@ async function listWriteKeys(orgId: string) {
   });
 
   return writeKeys;
+}
+
+async function revokeWriteKey(orgId: string, writeKeyId: string) {
+  const writeKeyRecord = await writeKeyRepository.findWriteKeyById(orgId, writeKeyId);
+
+  if (!writeKeyRecord) {
+    throw new AppError('Write key not found', StatusCodes.NOT_FOUND, 'WRITE_KEY_NOT_FOUND');
+  }
+
+  if (!writeKeyRecord.isActive) {
+    return;
+  }
+
+  await writeKeyRepository.update(writeKeyId, {
+    isActive: false,
+    revokedAt: new Date(),
+  });
+
+  return;
 }
 
 async function updateLastUsed(writeKeyId: string) {
@@ -97,4 +117,4 @@ function isAllowedDomain(origin: string, allowedDomains: string[]): boolean {
   return allowedDomains.includes(origin);
 }
 
-export { createWriteKey, validateWriteKey, updateLastUsed, listWriteKeys };
+export { createWriteKey, validateWriteKey, updateLastUsed, listWriteKeys, revokeWriteKey };
