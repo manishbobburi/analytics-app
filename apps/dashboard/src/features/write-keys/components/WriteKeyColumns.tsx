@@ -4,6 +4,7 @@ import { Badge } from '@/components/ui/badge';
 
 import type { WriteKey } from '../types';
 import { WriteKeyDomainsCell } from './WriteKeyDomainsCell';
+import { WriteKeyActions } from './WriteKeyActions';
 
 export const writeKeyColumns: ColumnDef<WriteKey>[] = [
   {
@@ -48,6 +49,23 @@ export const writeKeyColumns: ColumnDef<WriteKey>[] = [
     cell: ({ row }) => (
       <span className="whitespace-nowrap">{formatDate(row.original.createdAt)}</span>
     ),
+  },
+
+  {
+    id: 'actions',
+    enableHiding: false,
+    cell: ({ row }) => {
+      const writeKey = row.original;
+      return (
+        <div className="flex justify-end">
+          <WriteKeyActions
+            writeKeyId={writeKey.id}
+            label={writeKey.label}
+            isActive={writeKey.isActive}
+          />
+        </div>
+      );
+    },
   },
 ];
 
