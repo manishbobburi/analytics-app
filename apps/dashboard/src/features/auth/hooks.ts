@@ -1,5 +1,5 @@
-import { useMutation } from '@tanstack/react-query';
-import { login, refreshAccessToken } from './api';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { login, refreshAccessToken, signup } from './api';
 import { clearAccessToken, setAccessToken } from './auth-store';
 
 export function useLogin() {
@@ -24,4 +24,10 @@ export async function bootstrapAuth(): Promise<boolean> {
 
     return false;
   }
+}
+
+export function useSignup() {
+  return useMutation({
+    mutationFn: signup,
+  });
 }
