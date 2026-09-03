@@ -1,5 +1,6 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { login, refreshAccessToken, signup } from './api';
+import { useNavigate } from 'react-router-dom';
+import { login, refreshAccessToken, signup, logout } from './api';
 import { clearAccessToken, setAccessToken } from './auth-store';
 
 export function useLogin() {
@@ -29,5 +30,20 @@ export async function bootstrapAuth(): Promise<boolean> {
 export function useSignup() {
   return useMutation({
     mutationFn: signup,
+  });
+}
+
+export function useLogout() {
+  const navigate = useNavigate();
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: logout,
+
+    onSuccess: () => {
+      clearAccessToken();
+      queryClient.clear();
+      navigate('/login', { replace: true });
+    },
   });
 }

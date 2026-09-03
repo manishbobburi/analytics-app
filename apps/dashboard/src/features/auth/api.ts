@@ -12,3 +12,7 @@ export async function refreshAccessToken(): Promise<AuthTokenResponse> {
 export async function signup(input: SignupInput): Promise<void> {
   return api.post('/organization/create-organization', input);
 }
+
+export async function logout(): Promise<void> {
+  await api.post('/auth/logout');
+}
