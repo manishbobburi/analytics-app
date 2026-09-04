@@ -2,6 +2,17 @@ import { StatusCodes } from 'http-status-codes';
 import { Prisma } from '@app/db';
 import { AppError } from '../error/appError.js';
 
+type PrismaAdapterError = {
+  cause?: {
+    originalCode?: string;
+    originalMessage?: string;
+    kind?: string;
+    constraint?: {
+      fields?: string[];
+    };
+  };
+};
+
 const handlePrismaValidationError = (_err: Prisma.PrismaClientValidationError): AppError => {
   return new AppError(
     'An internal database error occurred.',
@@ -31,11 +42,27 @@ const handlePrismaRustPanicError = (_err: Prisma.PrismaClientRustPanicError): Ap
 const handlePrismaKnownError = (err: Prisma.PrismaClientKnownRequestError): AppError => {
   switch (err.code) {
     case 'P2002': {
-      const fields = (err.meta?.target as string[])?.join(', ') ?? 'resource';
+      const meta = err.meta as
+        | {
+            target?: string[];
+            driverAdapterError?: PrismaAdapterError;
+          }
+        | undefined;
 
-      return new AppError(`${fields} already exists.`, StatusCodes.CONFLICT, 'DUPLICATE_RESOURCE', {
-        fields: err.meta?.target,
-      });
+      const fields = meta?.driverAdapterError?.cause?.constraint?.fields ?? [];
+
+      const fieldLabel = fields
+        .map((field) => field.charAt(0).toUpperCase() + field.slice(1))
+        .join(', ');
+
+      return new AppError(
+        `${fieldLabel || 'Resource'} already exists.`,
+        StatusCodes.CONFLICT,
+        'DUPLICATE_RESOURCE',
+        {
+          fields,
+        }
+      );
     }
 
     case 'P2003': {
