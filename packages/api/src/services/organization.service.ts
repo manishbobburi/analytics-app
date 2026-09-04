@@ -1,5 +1,6 @@
 import * as bcrypt from 'bcrypt';
-import { organizationRepository } from '@app/db';
+import { organizationRepository, Prisma } from '@app/db';
+import { GetOrganizationResponse } from '@app/shared';
 
 async function createOrganization(data: any) {
   const passwordHash = await bcrypt.hash(data.password, Number(process.env.SALT_ROUNDS));
@@ -15,4 +16,12 @@ async function createOrganization(data: any) {
   return safeResponse;
 }
 
-export { createOrganization };
+async function getOrganization(orgId: string): Promise<GetOrganizationResponse> {
+  const response: Prisma.OrganizationModel = await organizationRepository.findById(orgId);
+
+  const { passwordHash: _passwordHash, createdAt: _createdAt, id: _id, ...safeResponse } = response;
+
+  return safeResponse;
+}
+
+export { createOrganization, getOrganization };

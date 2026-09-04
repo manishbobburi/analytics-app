@@ -31,4 +31,13 @@ async function createOrganization(req: Request, res: Response) {
   return res.status(StatusCodes.OK).json(successResponse(record));
 }
 
-export { createOrganization };
+async function getOrganization(req: Request, res: Response) {
+  const user = req.user!;
+  const orgId = user.sub;
+
+  const record = await organizationService.getOrganization(orgId);
+
+  return res.status(StatusCodes.OK).json(successResponse(record));
+}
+
+export { createOrganization, getOrganization };
