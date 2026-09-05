@@ -11,9 +11,16 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 
+import { AccountSkeleton } from './AccountSkeleton';
 import { useLogout } from '@/features/auth/hooks';
+import type { GetOrganizationResponse } from '@/features/auth/types';
 
-export function UserMenu() {
+interface UserMenuProps {
+  data: GetOrganizationResponse | undefined;
+  isPending: boolean;
+}
+
+export function UserMenu({ data, isPending }: UserMenuProps) {
   const logoutMutation = useLogout();
 
   return (
@@ -28,17 +35,21 @@ export function UserMenu() {
       <DropdownMenuContent side="right" align="end" className="w-56">
         <DropdownMenuGroup>
           <DropdownMenuLabel>
-            <div className="flex items-center gap-3">
-              <Avatar className="h-8 w-8 shrink-0 rounded-full">
-                <AvatarFallback>M</AvatarFallback>
-              </Avatar>
+            {isPending ? (
+              <AccountSkeleton />
+            ) : (
+              <div className="flex items-center gap-3">
+                <Avatar className="h-8 w-8 shrink-0 rounded-full">
+                  <AvatarFallback>{data?.name.charAt(0).toUpperCase()}</AvatarFallback>
+                </Avatar>
 
-              <div className="grid flex-1 text-left text-sm leading-tight group-data-[collapsible=icon]:hidden">
-                <span className="truncate font-semibold">Meta</span>
+                <div className="grid flex-1 text-left text-sm leading-tight group-data-[collapsible=icon]:hidden">
+                  <span className="truncate font-semibold">{data?.name}</span>
 
-                <span className="truncate text-xs text-muted-foreground">m@example.com</span>
+                  <span className="truncate text-xs text-muted-foreground">{data?.email}</span>
+                </div>
               </div>
-            </div>
+            )}
           </DropdownMenuLabel>
         </DropdownMenuGroup>
 

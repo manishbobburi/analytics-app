@@ -1,6 +1,6 @@
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
-import { login, refreshAccessToken, signup, logout } from './api';
+import { login, refreshAccessToken, signup, logout, getCurrentOrganization } from './api';
 import { clearAccessToken, setAccessToken } from './auth-store';
 
 export function useLogin() {
@@ -45,5 +45,12 @@ export function useLogout() {
       queryClient.clear();
       navigate('/login', { replace: true });
     },
+  });
+}
+
+export function useCurrentOrganization() {
+  return useQuery({
+    queryKey: ['auth', 'organization'],
+    queryFn: getCurrentOrganization,
   });
 }
