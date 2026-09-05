@@ -1,3 +1,5 @@
+export type { GetOrganizationResponse } from '@app/shared';
+
 export interface LoginInput {
   email: string;
   password: string;

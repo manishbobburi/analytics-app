@@ -1,5 +1,5 @@
 import { api } from '@/lib/api';
-import type { AuthTokenResponse, LoginInput, SignupInput } from './types';
+import type { AuthTokenResponse, LoginInput, SignupInput, GetOrganizationResponse } from './types';
 
 export async function login(input: LoginInput): Promise<AuthTokenResponse> {
   return api.post<AuthTokenResponse>('/auth/login', input);
@@ -15,4 +15,8 @@ export async function signup(input: SignupInput): Promise<void> {
 
 export async function logout(): Promise<void> {
   await api.post('/auth/logout');
+}
+
+export async function getCurrentOrganization(): Promise<GetOrganizationResponse> {
+  return api.get('/organization/me');
 }
