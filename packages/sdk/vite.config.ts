@@ -8,9 +8,9 @@ export default defineConfig({
   build: {
     lib: {
       entry: resolve(__dirname, 'src/index.ts'),
-      name: 'app',
-      fileName: 'v1',
-      formats: ['iife'],
+      name: 'ClickStream',
+      fileName: 'index',
+      formats: ['es', 'iife'],
     },
     rollupOptions: {
       output: {
@@ -19,6 +19,6 @@ export default defineConfig({
       },
     },
     minify: 'terser',
-    emptyOutDir: false,
+    emptyOutDir: true,
   },
 });
