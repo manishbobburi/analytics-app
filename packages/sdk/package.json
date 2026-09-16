@@ -1,5 +1,5 @@
 {
-  "name": "@clickstream/sdk",
+  "name": "@click-stream/sdk",
   "version": "0.1.0",
   "description": "Browser SDK for ClickStream analytics",
   "type": "module",
