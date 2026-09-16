@@ -7,7 +7,7 @@ import {
   TopEventRecord,
   TopPagesQuery,
   TopPageRecord,
-} from '@app/shared';
+} from '@click-stream/shared';
 import { prisma, Prisma } from '../client.js';
 
 class AnalyticsRepository {

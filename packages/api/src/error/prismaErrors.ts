@@ -1,6 +1,6 @@
 import { StatusCodes } from 'http-status-codes';
-import { Prisma } from '@app/db';
-import { AppError } from '../error/appError.js';
+import { Prisma } from '@click-stream/db';
+import { AppError } from './appError.js';
 
 type PrismaAdapterError = {
   cause?: {

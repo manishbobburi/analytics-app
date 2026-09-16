@@ -1,4 +1,4 @@
-import { analyticsRepository } from '@app/db';
+import { analyticsRepository } from '@click-stream/db';
 import {
   OverviewQuery,
   OverviewFilters,
@@ -14,7 +14,7 @@ import {
   TopPagesQuery,
   TopPagesResponse,
   TopPage,
-} from '@app/shared';
+} from '@click-stream/shared';
 
 async function getOverview(orgId: string, query: OverviewQuery): Promise<OverviewResponse> {
   const { from, to } = query;

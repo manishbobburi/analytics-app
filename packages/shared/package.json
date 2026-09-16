@@ -1,5 +1,5 @@
 {
-  "name": "@app/shared",
+  "name": "@click-stream/shared",
   "version": "1.0.0",
   "private": true,
   "type": "module",

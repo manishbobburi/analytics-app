@@ -1,5 +1,5 @@
 {
-  "name": "@app/api",
+  "name": "@click-stream/api",
   "version": "0.1.0",
   "type": "module",
   "description": "",
@@ -13,8 +13,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@app/db": "workspace:*",
-    "@app/shared": "workspace:*",
+    "@click-stream/db": "workspace:*",
+    "@click-stream/shared": "workspace:*",
     "bcrypt": "^6.0.0",
     "cookie-parser": "^1.4.7",
     "cors": "^2.8.6",

@@ -1,6 +1,6 @@
 import crypto from 'crypto';
 import { StatusCodes } from 'http-status-codes';
-import { writeKeyRepository } from '@app/db';
+import { writeKeyRepository } from '@click-stream/db';
 import { CreateWriteKeyDto } from '../types/index.js';
 import { AppError } from '../error/index.js';
 
