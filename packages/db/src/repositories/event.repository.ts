@@ -1,4 +1,4 @@
-import { NormalizedEvent, EventFilters } from '@app/shared';
+import { NormalizedEvent, EventFilters } from '@click-stream/shared';
 import { prisma, Prisma } from '../client.js';
 import { BaseRepository } from './base.repository.js';
 

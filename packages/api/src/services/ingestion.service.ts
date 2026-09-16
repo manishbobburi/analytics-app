@@ -1,5 +1,5 @@
-import { eventRepository } from '@app/db';
-import { EventInput } from '@app/shared';
+import { eventRepository } from '@click-stream/db';
+import { EventInput } from '@click-stream/shared';
 import * as validationService from './validation.service.js';
 import * as normalizationService from './normalization.service.js';
 import * as writeKeyService from './writeKey.service.js';

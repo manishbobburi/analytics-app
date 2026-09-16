@@ -1,5 +1,5 @@
-import { eventRepository } from '@app/db';
-import { EventFilters, GetEventSchema } from '@app/shared';
+import { eventRepository } from '@click-stream/db';
+import { EventFilters, GetEventSchema } from '@click-stream/shared';
 import { AppError } from '../error/index.js';
 import { StatusCodes } from 'http-status-codes';
 

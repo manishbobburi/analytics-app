@@ -1,8 +1,8 @@
 {
-  "name": "app",
-  "version": "0.0.0",
+  "name": "click-stream",
+  "version": "1.0.0",
   "private": true,
-  "description": "app monorepo",
+  "description": "ClickStream analytics platform",
   "devEngines": {
     "packageManager": {
       "name": "pnpm",
@@ -11,9 +11,9 @@
     }
   },
   "scripts": {
-    "dev:sdk": "pnpm --filter @app/sdk dev",
-    "dev:api": "pnpm --filter @app/api dev",
-    "build:sdk": "pnpm --filter @app/sdk build",
+    "dev:api": "pnpm --filter @click-stream/api dev",
+    "build:sdk": "pnpm --filter @click-stream/sdk build",
+    "build:db": "pnpm --filter @click-stream/db build",
     "build": "pnpm -r build",
     "lint": "pnpm -r lint",
     "format": "prettier --write .",

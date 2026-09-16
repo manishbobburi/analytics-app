@@ -2,7 +2,7 @@ import bcrypt from 'bcrypt';
 import crypto from 'node:crypto';
 import jwt from 'jsonwebtoken';
 import { StatusCodes } from 'http-status-codes';
-import { organizationRepository, refreshTokenRepository } from '@app/db';
+import { organizationRepository, refreshTokenRepository } from '@click-stream/db';
 import { AppError } from '../error/index.js';
 import { LoginInput } from '../types/auth.types.js';
 import {

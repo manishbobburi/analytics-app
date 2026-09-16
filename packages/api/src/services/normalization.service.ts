@@ -1,4 +1,4 @@
-import { EventInput, NormalizedEvent } from '@app/shared';
+import { EventInput, NormalizedEvent } from '@click-stream/shared';
 import { UAParser } from 'ua-parser-js';
 
 function normalizeTimestamp(timestamp: string | number | Date): Date {

@@ -10,7 +10,7 @@ import {
   TopEventsQuerySchema,
   TopEventsQuery,
   TopPagesQuerySchema,
-} from '@app/shared';
+} from '@click-stream/shared';
 import { analyticsService } from '../services/index.js';
 import { AppError } from '../error/index.js';
 import successResponse from '../utils/common/success-response.js';

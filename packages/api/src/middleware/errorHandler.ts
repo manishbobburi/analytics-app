@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from 'express';
-import { Prisma } from '@app/db';
+import { Prisma } from '@click-stream/db';
 import { ErrorWithCode } from '../types/index.js';
 import {
   sendErrorDev,

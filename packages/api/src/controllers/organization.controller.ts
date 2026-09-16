@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
-import { SignupSchema } from '@app/shared';
+import { SignupSchema } from '@click-stream/shared';
 import successResponse from '../utils/common/success-response.js';
 import { AppError } from '../error/index.js';
 import * as organizationService from '../services/organization.service.js';

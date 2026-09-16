@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
-import { WriteKeyIdSchema } from '@app/shared';
+import { WriteKeyIdSchema } from '@click-stream/shared';
 import { writeKeyService } from '../services/index.js';
 import { CreateWriteKeyDto } from '../types/index.js';
 import { AppError } from '../error/index.js';
