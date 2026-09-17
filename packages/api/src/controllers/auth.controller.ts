@@ -19,7 +19,7 @@ async function login(req: Request, res: Response) {
     secure: serverConfig.isProd,
     sameSite: 'strict',
     maxAge: 30 * 24 * 60 * 60 * 1000,
-    path: '/auth/refresh',
+    path: '/api/v1/auth/refresh',
   });
 
   return res.status(StatusCodes.OK).json(successResponse({ accessToken }));
@@ -43,7 +43,7 @@ async function refreshAccessToken(req: Request, res: Response) {
     secure: serverConfig.isProd,
     sameSite: 'strict',
     maxAge: 30 * 24 * 60 * 60 * 1000,
-    path: '/auth/refresh',
+    path: '/api/v1/auth/refresh',
   });
 
   return res.status(StatusCodes.OK).json(successResponse({ accessToken }));
@@ -60,7 +60,7 @@ async function logout(req: Request, res: Response) {
     httpOnly: true,
     secure: serverConfig.isProd,
     sameSite: 'strict',
-    path: '/auth/refresh',
+    path: '/api/v1/auth/refresh',
   });
 
   return res.status(StatusCodes.NO_CONTENT).end();
