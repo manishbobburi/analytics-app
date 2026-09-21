@@ -1,4 +1,4 @@
-import { type EventFilters } from '@app/shared';
+import type { EventFilters, EventExportField, ExportFormat } from '@click-stream/shared';
 
 export const EVENTS_PAGE_SIZE_OPTIONS = ['10', '20', '50', '100'] as const;
 
@@ -87,3 +87,10 @@ export interface EventDetail {
 }
 
 export type EventResponse = EventDetail;
+
+export interface ExportEventsInput {
+  format: ExportFormat;
+  fields: EventExportField[];
+  from: string;
+  to: string;
+}

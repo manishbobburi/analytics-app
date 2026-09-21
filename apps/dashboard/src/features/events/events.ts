@@ -1,3 +1,5 @@
+import type { AxiosResponseHeaders } from 'axios';
+import { endOfDay, startOfDay } from 'date-fns';
 import { EVENTS_PAGE_SIZE_OPTIONS, type EventsPageSize } from './types';
 
 const DEFAULT_PAGE = '1';
@@ -37,4 +39,30 @@ export function setLimit(params: URLSearchParams, limit: EventsPageSize): URLSea
   next.set('limit', limit);
 
   return next;
+}
+
+export interface ExportEventResponse {
+  blob: Blob;
+  headers: AxiosResponseHeaders;
+}
+
+export function downloadExportFile(blob: Blob, filename: string) {
+  const url = URL.createObjectURL(blob);
+  const anchor = document.createElement('a');
+
+  anchor.href = url;
+  anchor.download = filename;
+
+  document.body.appendChild(anchor);
+  anchor.click();
+  anchor.remove();
+
+  URL.revokeObjectURL(url);
+}
+
+export function getExportDateRange(from: Date, to: Date) {
+  return {
+    from: startOfDay(from).toISOString(),
+    to: endOfDay(to).toISOString(),
+  };
 }
