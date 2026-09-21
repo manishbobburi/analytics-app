@@ -3,3 +3,4 @@ export * from './writeKey.repository.js';
 export * from './event.repository.js';
 export * from './refreshToken.repository.js';
 export * from './analytics.repository.js';
+export * from './export.repository.js';
