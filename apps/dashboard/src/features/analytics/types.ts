@@ -9,7 +9,7 @@ export type {
   TopEventsResponse,
   BreakdownRecord,
   BreakdownResponse,
-} from '@app/shared';
+} from '@click-stream/shared';
 
 export const DATE_RANGE_PRESETS = [
   'today',

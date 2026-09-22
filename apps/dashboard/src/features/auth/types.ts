@@ -1,4 +1,4 @@
-export type { GetOrganizationResponse } from '@app/shared';
+export type { GetOrganizationResponse } from '@click-stream/shared';
 
 export interface LoginInput {
   email: string;
