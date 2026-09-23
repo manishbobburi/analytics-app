@@ -1,6 +1,10 @@
 packages:
+  - 'apps/*'
   - 'packages/*'
 allowBuilds:
   '@prisma/engines': true
+  bcrypt: true
   esbuild: true
   prisma: true
+minimumReleaseAgeExclude:
+  - '@click-stream/sdk@0.1.0'
