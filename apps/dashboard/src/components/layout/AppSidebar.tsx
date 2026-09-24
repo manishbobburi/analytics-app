@@ -6,7 +6,7 @@ import {
   SidebarHeader,
   useSidebar,
 } from '@/components/ui/sidebar';
-import logo from '@/assets/logo.png';
+import Logo from '@/components/common/Logo';
 
 import { NavMain } from './NavMain';
 import { UserNav } from './UserNav';
@@ -29,11 +29,7 @@ export function AppSidebar() {
             onClick={handleLogoClick}
             className="flex h-10 w-full items-center gap-3 rounded-md px-2 group-data-[collapsible=icon]:px-0 group-data-[collapsible=icon]:justify-center hover:bg-sidebar-accent hover:text-sidebar-accent-foreground transition-colors"
           >
-            <img
-              src={logo}
-              alt="Click Stream"
-              className="h-8 w-8 shrink-0 flex-none rounded-full"
-            />
+            <Logo />
 
             <span className="truncate text-lg font-semibold group-data-[collapsible=icon]:hidden">
               Click Stream
