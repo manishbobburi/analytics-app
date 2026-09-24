@@ -1,10 +1,10 @@
-import { AppLayout } from '@/components/layout/AppLayout';
+import { Outlet } from 'react-router-dom';
 import { Toaster } from '@/components/ui/toast';
 
 export default function RootLayout() {
   return (
     <>
-      <AppLayout />
+      <Outlet />
       <Toaster />
     </>
   );

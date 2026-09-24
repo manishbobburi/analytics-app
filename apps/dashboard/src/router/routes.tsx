@@ -2,42 +2,50 @@ import { createBrowserRouter } from 'react-router-dom';
 
 import RootLayout from './RootLayout';
 import ProtectedRoute from './ProtectedRoute';
+import { AppLayout } from '@/components/layout/AppLayout';
+import { LoginPage } from '@/pages/LoginPage';
+import { SignupPage } from '@/pages/SignupPage';
+import { Dashboard } from '@/pages/Dashboard';
+import { EventsPage } from '@/pages/Events';
+import { WriteKeysPage } from '@/pages/WriteKeys';
 
 export const router = createBrowserRouter([
   {
-    path: '/login',
-    element: <h1>Login</h1>,
-  },
-  {
-    element: (
-      <ProtectedRoute>
-        <RootLayout />
-      </ProtectedRoute>
-    ),
-
-    errorElement: <h1>Error</h1>,
-
+    element: <RootLayout />,
     children: [
       {
-        index: true,
-        element: <h1>Dashboard</h1>,
+        path: '/login',
+        element: <LoginPage />,
       },
       {
-        path: 'events',
-        element: <h1>Events</h1>,
+        path: '/signup',
+        element: <SignupPage />,
       },
       {
-        path: 'write-keys',
-        element: <h1>Write keys</h1>,
+        element: (
+          <ProtectedRoute>
+            <AppLayout />
+          </ProtectedRoute>
+        ),
+        children: [
+          {
+            index: true,
+            element: <Dashboard />,
+          },
+          {
+            path: 'events',
+            element: <EventsPage />,
+          },
+          {
+            path: 'write-keys',
+            element: <WriteKeysPage />,
+          },
+        ],
       },
       {
-        path: 'settings',
-        element: <h1>Settings</h1>,
+        path: '*',
+        element: <h1>Not found</h1>,
       },
     ],
-  },
-  {
-    path: '*',
-    element: <h1>Not found</h1>,
   },
 ]);
