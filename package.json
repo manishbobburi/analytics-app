@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "description": "ClickStream analytics platform",
+  "packageManager": "pnpm@11.3.0",
   "devEngines": {
     "packageManager": {
       "name": "pnpm",
