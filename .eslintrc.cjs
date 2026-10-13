@@ -28,7 +28,7 @@ module.exports = {
       }
     },
     {
-      files: ['packages/api/**/*.ts'],
+      files: ['apps/api/**/*.ts'],
       env: { node: true, es2022: true }
     }
   ]

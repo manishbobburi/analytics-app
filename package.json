@@ -28,7 +28,7 @@
       "eslint --fix",
       "bash -c 'cd packages/sdk && pnpm typecheck'"
     ],
-    "packages/api/**/*.ts": [
+    "apps/api/**/*.ts": [
       "eslint --fix"
     ]
   },
