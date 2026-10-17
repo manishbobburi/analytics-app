@@ -18,5 +18,6 @@ export async function exportEvents(
     method: 'POST',
     url: '/export/events',
     data: input,
+    timeout: 60000,
   });
 }
