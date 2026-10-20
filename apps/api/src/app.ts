@@ -4,6 +4,8 @@ import cookieParser from 'cookie-parser';
 import { serverConfig } from './config/index.js';
 import router from './routes/index.js';
 import globalErrorHandler from './middleware/errorHandler.js';
+import { requestMetricsMiddleware } from './middleware/index.js';
+import { registry } from './observability/metrics.js';
 
 const app: Express = express();
 
@@ -27,7 +29,18 @@ app.use(express.json({ limit: serverConfig.limits.bodyLimit }));
 
 app.use(express.urlencoded({ extended: false }));
 
+app.use(requestMetricsMiddleware);
+
 app.use('/health', (_, res) => res.json({ status: 'OK' }));
+
+app.get('/metrics', async (_req, res, next) => {
+  try {
+    res.setHeader('Content-Type', registry.contentType);
+    res.end(await registry.metrics());
+  } catch (err) {
+    next(err);
+  }
+});
 
 app.use('/api', router);
 
