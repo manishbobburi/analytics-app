@@ -77,16 +77,21 @@ class AnalyticsRepository {
     const { orgId, from, to } = filters;
 
     const where = Prisma.sql`
-            WHERE org_id = ${orgId}
-            ${from ? Prisma.sql`AND timestamp >= ${from}` : Prisma.empty}
-            ${to ? Prisma.sql`AND timestamp < ${to}` : Prisma.empty}
-        `;
+      WHERE org_id = ${orgId}
+      ${from ? Prisma.sql`AND timestamp >= ${from}` : Prisma.empty}
+      ${to ? Prisma.sql`AND timestamp < ${to}` : Prisma.empty}
+      AND user_id IS NULL
+      AND anon_id IS NOT NULL
+    `;
 
     const result = await prisma.$queryRaw<{ count: bigint }[]>`
-            SELECT COUNT(DISTINCT anon_id) AS count
-            FROM events ${where}
-            AND user_id is NULL
-        `;
+      SELECT COUNT(*)
+      FROM (
+        SELECT DISTINCT anon_id
+        FROM events
+        ${where}
+      ) AS distinct_users
+    `;
 
     return Number(result[0].count);
   }
