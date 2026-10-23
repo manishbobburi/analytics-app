@@ -19,7 +19,7 @@ import {
 } from './types';
 
 export const DEFAULT_DATE_RANGE: DashboardDateRange = {
-  preset: 'last-30-days',
+  preset: 'last-7-days',
 };
 
 export const DATE_RANGE_LABELS: Record<DateRangePreset, string> = {
