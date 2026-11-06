@@ -1,4 +1,4 @@
-import { LogOut, MoreVertical } from 'lucide-react';
+import { LogOut, MoreVertical, Contrast } from 'lucide-react';
 
 import {
   DropdownMenu,
@@ -9,6 +9,8 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import { ThemeMenu } from '@/components/theme/ThemeMenu';
+
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 
 import { AccountSkeleton } from './AccountSkeleton';
@@ -52,6 +54,10 @@ export function UserMenu({ data, isPending }: UserMenuProps) {
             )}
           </DropdownMenuLabel>
         </DropdownMenuGroup>
+
+        <DropdownMenuSeparator />
+
+        <ThemeMenu />
 
         <DropdownMenuSeparator />
 
