@@ -9,8 +9,6 @@ out
 
 generated/
 
-pnpm-lock.yaml
-
 .env
 .env.*
 !.env.example
